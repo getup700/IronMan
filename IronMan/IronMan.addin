@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>IronMan</Name>
+		<Assembly>IronMan\IronMan.Revit.dll</Assembly>
+		<ClientId>104AE7B9-0A9C-4875-B67D-48B2020DE40B</ClientId>
+		<FullClassName>IronMan.ApplicationUI</FullClassName>
+		<VendorId>IronMan</VendorId>
+		<VendorDescription>www.baidu.com</VendorDescription>
+	</AddIn>
+</RevitAddIns>

@@ -1,0 +1,115 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>true</UseWindowsForms>
+		<PlatformTarget>x64</PlatformTarget>
+		<Configurations>Debug;Release;RVT_2019;RVT_2022;RVT_2020;RVT_2021;Debug20</Configurations>
+		<LangVersion>8</LangVersion>
+	</PropertyGroup>
+	<!--多版本多框架配置-->
+		<PropertyGroup Condition="'$(Configuration)'=='Debug20'">
+		<StartAction>Program</StartAction>
+		<RevitVersion>2020</RevitVersion>
+		<StartProgram>D:\Revit2020\Revit 2020\Revit.exe</StartProgram>
+		<TargetFramework>net472</TargetFramework>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)'=='RVT_2019'">
+		<!--启动外部程序-->
+		<StartAction>Program</StartAction>
+		<RevitVersion>2019</RevitVersion>
+		<StartProgram>D:\Revit2019\Revit 2019\Revit.exe</StartProgram>
+		<TargetFramework>net472</TargetFramework>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='RVT_2020'">
+		<StartAction>Program</StartAction>
+		<RevitVersion>2020</RevitVersion>
+		<StartProgram>D:\Revit2020\Revit 2020\Revit.exe</StartProgram>
+		<TargetFramework>net472</TargetFramework>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='RVT_2021'">
+		<StartAction>Program</StartAction>
+		<RevitVersion>2021</RevitVersion>
+		<StartProgram>D:\Revit2021\Revit 2021\Revit.exe</StartProgram>
+		<TargetFramework>net48</TargetFramework>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='RVT_2022'">
+		<StartAction>Program</StartAction>
+		<RevitVersion>2022</RevitVersion>
+		<StartProgram>D:\Revit2022\Revit 2022\Revit.exe</StartProgram>
+		<TargetFramework>net48</TargetFramework>
+	</PropertyGroup>
+	
+	<!--复制addin及dll到Revit20**-->
+	<Target Name="CopyAddin" BeforeTargets="PostBuildEvent">
+		<!--定义文件集合-->
+		<ItemGroup>
+			<SourceFiles Include="$(ProjectDir)$(OutDir)\**\*.*"></SourceFiles>
+		</ItemGroup>
+		<Copy SourceFiles="$(ProjectDir)\IronMan.addin" DestinationFolder="C:\ProgramData\Autodesk\Revit\Addins\$(RevitVersion)"></Copy>
+		<Copy SourceFiles="@(SourceFiles)" DestinationFiles="@(SourceFiles->'C:\ProgramData\Autodesk\Revit\Addins\$(RevitVersion)\IronMan\%(RecursiveDir)%(Filename)%(Extension)')"></Copy>
+	</Target>
+
+
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug20|AnyCPU'">
+		<Optimize>False</Optimize>
+	</PropertyGroup>	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2019|AnyCPU'">
+		<Optimize>True</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2022|AnyCPU'">
+		<Optimize>True</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2020|AnyCPU'">
+		<Optimize>True</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2021|AnyCPU'">
+		<Optimize>True</Optimize>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="Updaters\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\IronMan.Revit.Entity\IronMan.Revit.Entity.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="PresentationCore" />
+		<Reference Include="PresentationFramework" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+
+</Project>
