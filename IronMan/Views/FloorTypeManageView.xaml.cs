@@ -1,6 +1,4 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using IronMan.Revit.IServices;
-using IronMan.Revit.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,22 +16,27 @@ using System.Windows.Shapes;
 namespace IronMan.Revit.Views
 {
     /// <summary>
-    /// MaterialDialog.xaml 的交互逻辑
+    /// FloorTypeManageView.xaml 的交互逻辑
     /// </summary>
-    public partial class MaterialDialogWindow : Window
+    public partial class FloorTypeManageView : Window
     {
-        
-        public MaterialDialogWindow( )
+        public FloorTypeManageView()
         {
             InitializeComponent();
-            Messenger.Default.Register<bool>(this, Revit.Contacts.Tokens.MaterialDialogWindow, CloseWindow);
-            this.Unloaded += (o, e) => { Messenger.Default.Unregister(this); };
+            Messenger.Default.Register<bool>(this,Contacts.Tokens.FloorTypeManageView, CloseWindow);
+            this.Unloaded += FloorTypeManageView_Unloaded;
+        }
+
+        private void FloorTypeManageView_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Unregister(this);
         }
 
         private void CloseWindow(bool obj)
         {
-            this.DialogResult = obj;
-            this.Close();
+            this.DialogResult = true;
         }
+
+
     }
 }

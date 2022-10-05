@@ -1,8 +1,8 @@
 ﻿using Autodesk.Revit.DB;
 using IronMan.Revit.Entity;
 using GalaSoft.MvvmLight.Messaging;
-using IronMan.IServices;
-using IronMan.ViewModels;
+using IronMan.Revit.IServices;
+using IronMan.Revit.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +16,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using IronMan.Services;
+using IronMan.Revit.Services;
+using IronMan.Revit.Contacts;
 
-namespace IronMan.Views
+namespace IronMan.Revit.Views
 {
     /// <summary>
     /// Materials.xaml 的交互逻辑
@@ -27,28 +28,28 @@ namespace IronMan.Views
     {
         //private Document _doc;
 
-        public MaterialsWindow(Document document)
+        public MaterialsWindow()
         {
             InitializeComponent();
-            this.DataContext = new MaterialsViewModel( new MaterialService(new DataContext(document)));
+            /////有ioc不要你了
+            //this.DataContext = new MaterialsViewModel( new MaterialService(new DataContext(document)));
             //注册消息中心
             //this,接收方
             //硬编码：token用"Materials";软编码：Tokens类的MaterialsDialog;
             //CloseWindow,接收后的Action
-            Messenger.Default.Register<bool>(this, Contacts.Tokens.MaterialsWindow, CloseWindow);
-            Messenger.Default.Register<NotificationMessageAction<MaterialPlus>>(this, Contacts.Tokens.MaterialDialogWindow, ShowMaterialDialog);
+            Messenger.Default.Register<bool>(this, Tokens.MaterialsWindow, CloseWindow);
+            Messenger.Default.Register<NotificationMessageAction<MaterialPlus>>(this, Tokens.MaterialDialogWindow, ShowMaterialDialog);
             //取消注册消息中心
             this.Unloaded += MaterialsWindow_Unloaded;
         }
 
         private void ShowMaterialDialog(NotificationMessageAction<MaterialPlus> message)
         {
-            MaterialDialogWindow dialogView = new MaterialDialogWindow();     
+            MaterialDialogWindow dialogView = new MaterialDialogWindow();
             MaterialDialogViewModel dialogViewModel = message.Target as MaterialDialogViewModel;
             dialogView.DataContext = dialogViewModel;
             dialogViewModel.Initial(message.Sender);
-            
-                dialogView.ShowDialog();
+            dialogView.ShowDialog();
             message.Execute(dialogViewModel.MaterialPlus);
 
             //MessageBox.Show("edit element Materials");
@@ -65,5 +66,9 @@ namespace IronMan.Views
             this.DialogResult = result;
         }
 
+        private void Button_Click()
+        {
+
+        }
     }
 }

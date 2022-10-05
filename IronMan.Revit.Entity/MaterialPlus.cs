@@ -4,15 +4,22 @@ using Toolkit.Extension;
 using System;
 using System.ComponentModel;
 using GalaSoft.MvvmLight;
+using System.Runtime.CompilerServices;
 
 namespace IronMan.Revit.Entity
 {
-    public class MaterialPlus : ObservableObject
+    public class MaterialPlus : ElementProxy
     {
-        private string _name;
+        public MaterialPlus(Material material) :base (material)
+        {
+            _material = material;
+            _color = material.Color;
+            _appearanceColor = GetAppearanceColor();
+        }
+
+
         private Color _color;
         private Color _appearanceColor;
-        private ElementId _id;
         private Material _material;
 
         public Document Doc { get => Material.Document; }
@@ -23,11 +30,12 @@ namespace IronMan.Revit.Entity
             private set => _material = value;
         }
 
-        public ElementId Id
+        protected void Set<T>(T value, Action<T> callback, [CallerMemberName] string name =null)
         {
-            get { return _id; }
-            set { _id = value; }
+            callback.Invoke(value);
+            RaisePropertyChanged(name);
         }
+
 
         public Color AppearanceColor
         {
@@ -36,7 +44,7 @@ namespace IronMan.Revit.Entity
             {
                 _appearanceColor = value;
                 RaisePropertyChanged();
-                Doc.NewTransaction(() => SetAppearanceColor(_appearanceColor));
+                //Doc.NewTransaction(() => SetAppearanceColor(_appearanceColor));
             }
         }
 
@@ -46,28 +54,10 @@ namespace IronMan.Revit.Entity
             set
             {
                 Set(ref _color, value);
-                Doc.NewTransaction(() => Material.Color = _color);
+               // Doc.NewTransaction(() => Material.Color = _color);
             }
         }
 
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                Set(ref _name, value);
-                Doc.NewTransaction(() => Material.Name = _name);
-            }
-        }
-
-        public MaterialPlus(Material material)
-        {
-            _material = material;
-            _id = material.Id;
-            _name = material.Name;
-            _color = material.Color;
-            _appearanceColor = GetAppearanceColor();
-        }
 
         private Color GetAppearanceColor()
         {
@@ -90,7 +80,7 @@ namespace IronMan.Revit.Entity
             return (AssetPropertyDoubleArray4d)asset?.FindByName("generic_diffuse");
         }
 
-        private void SetAppearanceColor(Color color)
+        public void SetAppearanceColor(Color color)
         {
             ElementId id = Material.AppearanceAssetId;
             if (id != null && id.IntegerValue != -1)

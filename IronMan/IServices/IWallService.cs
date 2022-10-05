@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IronMan.IServices
+namespace IronMan.Revit.IServices
 {
     public interface IWallService
     {

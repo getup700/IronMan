@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Toolkit.Mvvm
+namespace IronMan.Revit.Services
 {
-    public class Class1
+    internal class SpareTools
     {
     }
 }

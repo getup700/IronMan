@@ -23,5 +23,17 @@ namespace Toolkit.Extension
 #endif
 
         }
+        public static double ConvertToMM(this double value)
+        {
+#if (RVT_2019 || RVT_2020 || DEBUG20)
+            return UnitUtils.Convert(value, DisplayUnitType.DUT_DECIMAL_FEET, DisplayUnitType.DUT_MILLIMETERS);
+#endif
+#if RVT_2021
+            return UnitUtils.Convert(value, UnitTypeId.Feet, UnitTypeId.Millimeters);
+#endif
+#if RVT_2022
+            return UnitUtils.Convert(value, UnitTypeId.Feet, UnitTypeId.Millimeters);
+#endif
+        }
     }
 }

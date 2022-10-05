@@ -23,6 +23,12 @@ namespace Toolkit.Extension
             panel.AddItem(pushButtonData);
             return panel;
         }
+        public static void CreatePulldownButton<T>(this RibbonPanel panel, Action<PushButtonData> action)
+        {
+            Type type = typeof(T);
+            string name = "btn_" + type.Name;
+            PulldownButtonData data = new PulldownButtonData(name, name);
+        }
         /// <summary>
         /// 把位图扩展为BitmapSource
         /// </summary>

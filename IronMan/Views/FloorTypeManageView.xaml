@@ -1,0 +1,84 @@
+﻿<Window x:Class="IronMan.Revit.Views.FloorTypeManageView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IronMan.Revit.Views"
+        xmlns:vm="clr-namespace:IronMan.Revit.ViewModels"
+        d:DataContext="{d:DesignInstance Type=vm:FloorTypeManageViewModel}"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        x:Name="floorTypeManageView"
+        Title="FloorTypeManageView"
+        Height="450"
+        Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center">
+            <TextBlock Text="偏移量：" />
+            <TextBox Width="100"
+                     Text="{Binding Offset}" />
+        </StackPanel>
+        <ListBox Name="floors"
+                 ItemsSource="{Binding FloorTypeProxyList}"
+                 SelectionMode="Multiple"
+                 Grid.Row="1">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged">
+
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border x:Name="back">
+                                    <ContentPresenter />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected"
+                                             Value="True">
+                                        <Setter TargetName="back"
+                                                Property="Background"
+                                                Value="#7F969696" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text="{Binding LayerCount}"
+                                           Foreground="DarkSlateBlue" 
+                                           Background="LightCoral"/>
+                            </StackPanel>
+                            <Button Width="70"
+                                    Margin="3"
+                                    HorizontalAlignment="Right"
+                                    Content="Edit"
+                                    Command="{Binding ElementName=floorTypeManageView,Path=DataContext.EditCommand}"
+                                    CommandParameter="{Binding}" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Grid.Row="2"
+                Content="确定"
+                Margin="3"
+                Command="{Binding SubmitCommand}" />
+    </Grid>
+</Window>

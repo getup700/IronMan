@@ -13,21 +13,29 @@ using Toolkit.Extension;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight;
 using System.Windows.Forms;
-using IronMan.IServices;
+using IronMan.Revit.IServices;
 using System.Net.NetworkInformation;
-using IronMan.Services;
+using IronMan.Revit.Services;
 
-namespace IronMan.ViewModels
+namespace IronMan.Revit.ViewModels
 {
     public class MaterialsViewModel : ViewModelBase
     {
+        public MaterialsViewModel(IMaterialService service,IProgressBarService progressBarService)
+        {
+            _service = service;
+            _progressBarService = progressBarService;
+            GetElements();
+        }
+
+        #region Properties
+
+        private readonly IMaterialService _service;
+        private readonly IProgressBarService _progressBarService;
         private ObservableCollection<MaterialPlus> _materialsPlusCol;
         private string _keyword;
         private RelayCommand _submitCommand;
         private RelayCommand<MaterialPlus> _editMaterialCommand;
-
-        private readonly IMaterialService _service;
-        #region Properties
 
         public string Keyword
         {
@@ -47,11 +55,6 @@ namespace IronMan.ViewModels
 
         #endregion
 
-        public MaterialsViewModel(IMaterialService service)
-        {
-            _service = service;
-            GetElements();
-        }
 
         #region RelayCommands
 
@@ -74,22 +77,20 @@ namespace IronMan.ViewModels
                     Contacts.Tokens.MaterialDialogWindow);
             });
         }
-        private void TempMethod(MaterialPlus e)
-        {
-            MaterialsPlusCol.Insert(0,e);
-        }
 
         /// <summary>
         /// 删除材质命令,IList转IEnumerable<MaterialPlus>
         /// </summary>
         public RelayCommand<IList> DeleteElementsCommand
         {
-            get => new RelayCommand<IList>((x) =>
+            get => new RelayCommand<IList>((selectedElements) =>
             {
                 try
                 {
-                    _service.DeleteElements(x.Cast<MaterialPlus>());
+                    _progressBarService.Start(selectedElements.Count);
+                    _service.DeleteElements(selectedElements.Cast<MaterialPlus>());
                     GetElements();
+                    this._progressBarService.Stop();
                 }
                 catch (Exception e)
                 {
@@ -107,6 +108,14 @@ namespace IronMan.ViewModels
         /// 确认提交命令
         /// </summary>
         public RelayCommand SubmitCommand { get => _submitCommand ??= new RelayCommand(Submit); }//_submitCommand如果为空的话就赋值
+
+        public RelayCommand ExportExcelCommand
+        {
+            get => new RelayCommand(() =>
+            {
+                _service.Export(MaterialsPlusCol);
+            });
+        }
 
         #endregion
 

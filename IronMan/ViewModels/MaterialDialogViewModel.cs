@@ -1,7 +1,6 @@
 ﻿using IronMan.Revit.Entity;
 using Toolkit.Extension;
 using GalaSoft.MvvmLight.Command;
-using IronMan.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +9,18 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using Autodesk.Revit.DB;
 using GalaSoft.MvvmLight.Messaging;
-using IronMan.IServices;
+using IronMan.Revit.IServices;
 
-namespace IronMan.ViewModels
+namespace IronMan.Revit.ViewModels
 {
     public class MaterialDialogViewModel : ViewModelBase
     {
+        public MaterialDialogViewModel(IMaterialService service)
+        {
+            this._service = service;
+        }
+
+        #region Properties
         private readonly IMaterialService _service;
         //作为数据缓存而创建的属性
         private string _name;
@@ -41,24 +46,9 @@ namespace IronMan.ViewModels
             get => _name;
             set => Set(ref _name, value);
         }
+        #endregion
 
-        public MaterialDialogViewModel(IMaterialService service)
-        {
-            this._service = service;
-        }
-
-        public void Initial(object sender)
-        {
-            if (sender != null)
-            {
-                MaterialPlus = (MaterialPlus)sender;
-                //后台数据临时存放到缓冲属性
-                Name = MaterialPlus.Name;
-                Color = MaterialPlus.Color;
-                AppearanceColor = MaterialPlus.AppearanceColor;
-            }
-        }
-
+        #region RelayCommands
         public RelayCommand SetColorCommand
         {
             get => new RelayCommand(() =>
@@ -91,7 +81,7 @@ namespace IronMan.ViewModels
                 {
                     MaterialPlus = this._service.CreateElement(Name);
                 }
-                Save();
+                this._service.Save(MaterialPlus,Name,Color,AppearanceColor);
                 //if (_message.Notification == "Create")
                 //{
                 //    Document doc = _message.Target as Document;
@@ -115,22 +105,22 @@ namespace IronMan.ViewModels
                 MessengerInstance.Send(true, Contacts.Tokens.MaterialDialogWindow);
             });
         }
+        #endregion
 
-        private void Save()
+        #region Methods
+        public void Initial(object sender)
         {
-            if (MaterialPlus.Name != Name)
+            if (sender != null)
             {
-                MaterialPlus.Name = Name;
-            }
-            if (MaterialPlus.Color != Color)
-            {
-                MaterialPlus.Color = Color;
-            }
-            if (MaterialPlus.AppearanceColor != AppearanceColor)
-            {
-                MaterialPlus.AppearanceColor = AppearanceColor;
+                MaterialPlus = (MaterialPlus)sender;
+                //后台数据临时存放到缓冲属性
+                Name = MaterialPlus.Name;
+                Color = MaterialPlus.Color;
+                AppearanceColor = MaterialPlus.AppearanceColor;
             }
         }
 
+      
+        #endregion
     }
 }
