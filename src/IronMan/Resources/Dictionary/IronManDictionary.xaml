@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:converter="clr-namespace:IronMan.Revit.Converters"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <SolidColorBrush x:Key="mainBackground"
+                     Color="LightGray" />
+    <Style TargetType="GroupBox"
+           x:Key="InitialGroupBoxStyle">
+        <Setter Property="FontSize"
+                Value="10" />
+        <Setter Property="BorderThickness"
+                Value="0.2" />
+        <Setter Property="Margin"
+                Value="5,0" />
+        <Setter Property="FontFamily"
+                Value="Light" />
+    </Style>
+    <converter:DataSourceConverter x:Key="sourceConverter" />
+    <converter:VisibilityConverter x:Key="visibilityConverter" />
+    <converter:ColorConverter x:Key="colorConverter" />
+</ResourceDictionary>
+    

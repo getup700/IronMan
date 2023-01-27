@@ -1,0 +1,120 @@
+﻿<Window x:Class="IronMan.Revit.Views.FilterLabelLibrary"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IronMan.Revit.Views"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:vm="clr-namespace:IronMan.Revit.ViewModels"
+        d:DataContext="{d:DesignInstance Type=vm:ParameterFilterLabelLibraryViewModel}"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="FilterLabelLibrary"
+        Height="250"
+        Width="400">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/IronMan.Revit;component/dictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="ListBoxItem"
+                   x:Key="listBoxItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <Border x:Name="back"
+                                    CornerRadius="5">
+                                <TextBlock Text="{Binding}"
+                                           Margin="5" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            TargetName="back"
+                                            Value="PowderBlue" />
+                                </Trigger>
+                                <Trigger Property="IsSelected"
+                                         Value="False">
+                                    <Setter Property="Background"
+                                            TargetName="back"
+                                            Value="Transparent" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <DockPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="textBox"
+                         VerticalAlignment="Center"
+                         TextAlignment="Left"
+                         Text="{Binding InputLabel,UpdateSourceTrigger=PropertyChanged}"
+                         Margin="5"
+                         Width="100">
+                    <!--<i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewKeyDown">
+                            <i:InvokeCommandAction Command="{Binding NewLabelCommand}" CommandParameter="{Binding Path=Text}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>-->
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding NewLabelCommand}"
+                                    CommandParameter="{Binding Path=Text}"
+                                    Key="Return" />
+                    </TextBox.InputBindings>
+                </TextBox>
+            </StackPanel>
+            <Button HorizontalAlignment="Right"
+                    Command="{Binding DeleteLabelCommand}"
+                    CommandParameter="{Binding ElementName=listBox,Path=SelectedItems}"
+                    Margin="5"
+                    Background="Tomato"
+                    BorderThickness="0"
+                    Content="删除">
+            </Button>
+        </DockPanel>
+        <ListBox Grid.Row="1"
+                 Margin="5"
+                 x:Name="listBox"
+                 ItemContainerStyle="{DynamicResource listBoxItem}"
+                 ItemsSource="{Binding Labels}"
+                 SelectionMode="Extended">
+            <ListBox.Template>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto">
+                        <WrapPanel Orientation="Horizontal"
+                                   IsItemsHost="True"
+                                   Background="Transparent"
+                                   ScrollViewer.CanContentScroll="True" />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ListBox.Template>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border CornerRadius="3"
+                            Margin="3"
+                            Background="LightGray"
+                            BorderThickness="0.5">
+                        <TextBlock Text="{Binding}" />
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Content="确定"
+                Background="Gray"
+                Width="390"
+                Command="{Binding SubmitCommand}"
+                Grid.Row="2" BorderThickness="0"
+                Margin="3" />
+    </Grid>
+</Window>

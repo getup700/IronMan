@@ -1,0 +1,28 @@
+﻿<Window x:Class="IronMan.Revit.Views.CadToRevitView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IronMan.Revit.Views"
+        mc:Ignorable="d"
+        Title="CadToRevitView"
+        Height="250"
+        Width="200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Count" />
+        <TextBlock Text="{Binding Count}"
+                   Grid.Row="1" />
+        <Button Content="Select"
+                Grid.Row="2"
+                Command="{Binding SelectCommand}" />
+        <ListBox Grid.Row="3">
+            <ListBoxItem  Content="ewrwer"></ListBoxItem>
+        </ListBox>
+    </Grid>
+</Window>
