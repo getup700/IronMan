@@ -53,11 +53,11 @@ namespace IronMan.Revit.Toolkit.Mvvm
             RegisterField(SingletonIOC.Current.Container);
 
             //IOC中订阅事件
-            var events = ServiceLocator.Current.GetInstance<IEventManager>();
+            var events = SingletonIOC.Current.Container.GetInstance<IEventManager>();
             events?.Subscribe();
 
             //IOC中获取RibbonUI
-            var appUI = ServiceLocator.Current.GetInstance<IApplicationUI>();
+            var appUI = SingletonIOC.Current.Container.GetInstance<IApplicationUI>();
             return appUI == null ? Result.Cancelled : appUI.Initial();
 
         }

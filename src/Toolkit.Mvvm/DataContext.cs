@@ -24,7 +24,6 @@ namespace IronMan.Revit.Toolkit.Mvvm
             _uiProvider = uiProvider;
         }
 
-
         public UIApplication GetUIApplication()
         {
             //return GetUIDocument().Application;
@@ -39,7 +38,6 @@ namespace IronMan.Revit.Toolkit.Mvvm
             //return SingletonIOC.Current.Container.GetInstance<Document>();
             return GetUIApplication().ActiveUIDocument.Document;
         }
-
 
         public UIDocument GetUIDocument()
         {

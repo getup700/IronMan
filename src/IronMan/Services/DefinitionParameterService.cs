@@ -340,7 +340,7 @@ namespace IronMan.Revit.Services
                 }
             }
             #endregion
-            workbook.Write(fileStream);
+            workbook.Write(fileStream,true);
             fileStream.Close();
             #endregion
         }

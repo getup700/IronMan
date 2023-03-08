@@ -1,6 +1,16 @@
-﻿using Autodesk.Revit.Attributes;
+﻿///************************************************************************************
+///   Author:Tony Stark
+///   CretaeTime:2023/3/6 23:40:29
+///   Mail:2609639898@qq.com
+///   Github:https://github.com/getup700
+///
+///   Description:
+///
+///************************************************************************************
+
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using IronMan.Revit.Toolkit.Extension;
 using IronMan.Revit.Toolkit.Mvvm;
 using IronMan.Revit.Toolkit.Mvvm.Extension;
 using IronMan.Revit.Toolkit.Mvvm.IOC;
@@ -12,28 +22,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using IronMan.Revit.Toolkit.Extension;
-using Autodesk.Revit.DB.Mechanical;
 
 namespace IronMan.Revit.Commands
 {
-    [Transaction(TransactionMode.Manual)]
-    [Journaling(JournalingMode.NoCommandData)]
-    [Regeneration(RegenerationOption.Manual)]
-    public class ModeCommand : Toolkit.Mvvm.CommandBase
+    internal class RevitViewCommand : CommandBase
     {
         public override Window CreateMainWindow()
         {
-            return SingletonIOC.Current.Container.Resolve<ModeView, ModeViewModel>(true);
+            return SingletonIOC.Current.Container.Resolve<RevitView, RevitViewViewModel>();
         }
 
         public override Result Execute(ref string message, ElementSet elements)
         {
-            TransactionStatus status = DataContext.GetDocument().NewTransactionGroup("模态窗口", () =>
-            {
-                MainWindow.Show();
-                return true;
-            });
+            var status = DataContext.GetDocument().NewTransactionGroup("RevitView", () => MainWindow.ShowDialog().Value);
             return status == TransactionStatus.Committed ? Result.Succeeded : Result.Cancelled;
         }
     }

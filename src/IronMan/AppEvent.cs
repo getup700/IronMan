@@ -103,14 +103,14 @@ namespace IronMan.Revit
             Document document = _dataContext.GetDocument();
             document.NewTransaction(() =>
             {
-                Schema filterSetSchema = _dataStorage.GetSchema(typeof(DocumentProxy));
-                if (document.GetRvtEntity(Contants.IronManID.DataStorageName, filterSetSchema) == null)
+                Schema labelSetSchema = _dataStorage.GetSchema(typeof(DocumentProxy));
+                if (document.GetRvtEntity(Contants.IronManID.DataStorageName, labelSetSchema) == null)
                 {
                     DataStorage dataStorage = DataStorage.Create(document);
                     dataStorage.Name = Contants.IronManID.DataStorageName;
-                    if (dataStorage.GetEntity(filterSetSchema).Schema == null)
+                    if (dataStorage.GetEntity(labelSetSchema).Schema == null)
                     {
-                        var filterSetEntity = new RvtEntity(filterSetSchema);
+                        var filterSetEntity = new RvtEntity(labelSetSchema);
                         dataStorage.SetEntity(filterSetEntity);
                     }
                 }

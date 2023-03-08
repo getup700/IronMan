@@ -23,67 +23,22 @@ namespace IronMan.Revit.Commands.PushButtons
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             var document = commandData.Application.ActiveUIDocument.Document;
-            var view = document.ActiveView;
-            //var filters = view.GetFilters();
-            //if (filters.Count == 0)
-            //{
-            //    return Result.Succeeded;
-            //}
+            var views = document.GetElements<View>().Where(x => x.Name.Contains("出图-"));
+            if (views.Count() == 0)
+            {
+                return Result.Cancelled;
+            }
             document.NewTransaction(() =>
             {
-                //foreach (var filterId in filters)
-                //{
-                //    OverrideGraphicSettings overrides = view.GetFilterOverrides(filterId);
-                //    OverrideGraphicSettings ogs = new OverrideGraphicSettings();
-                //    overrides.SetSurfaceForegroundPatternId(ogs.SurfaceForegroundPatternId);
-                //    overrides.SetSurfaceForegroundPatternVisible(false);
-                //    overrides.SetSurfaceForegroundPatternColor(ogs.SurfaceForegroundPatternColor)
-                //    .SetProjectionLineWeight(ogs.ProjectionLineWeight)
-                //    .SetProjectionLineColor(ogs.ProjectionLineColor)
-                //    .SetSurfaceBackgroundPatternColor(ogs.SurfaceBackgroundPatternColor)
-                //    .SetSurfaceBackgroundPatternVisible(false);
-
                 //FilteredElementCollector fillFilter = new FilteredElementCollector(document);
                 //fillFilter.OfClass(typeof(FillPatternElement));
                 //var fillPatterns = document.GetElements<FillPatternElement>();
                 //FillPatternElement fp = fillFilter.First(m => (m as FillPatternElement).GetFillPattern().IsSolidFill) as FillPatternElement;
 
-                //ogs.SetSurfaceForegroundPatternId(fp.Id);
-                //ogs.SetSurfaceForegroundPatternColor(Color.InvalidColorValue);
-                //ogs.SetSurfaceTransparency(1);
-                //if (overrides.ProjectionLineColor != null)
-                //{
-                //    ogs.SetProjectionLineColor(overrides.ProjectionLineColor);
-                //}
-                //if(overrides.SurfaceForegroundPatternColor!= null)
-                //{
-                //    ogs.SetSurfaceForegroundPatternColor(new Color(0,0,0));
-                //}
-                //if (overrides.Transparency != 0)
-                //{
-                //    ogs.SetSurfaceTransparency(overrides.Transparency);
-                //}
-
-
-                //}
-                //var filterid = filters.First();
-                var filterid = document.ActiveView.GetFilters().First();
-                OverrideGraphicSettings overridess = view.GetFilterOverrides(filterid);
-                OverrideGraphicSettings ogss = new OverrideGraphicSettings();
-                overridess.SetSurfaceForegroundPatternId(ogss.SurfaceForegroundPatternId);
-                overridess.SetSurfaceForegroundPatternVisible(false);
-                overridess.SetSurfaceForegroundPatternColor(ogss.SurfaceForegroundPatternColor)
-                .SetProjectionLineWeight(ogss.ProjectionLineWeight)
-                .SetProjectionLineColor(ogss.ProjectionLineColor)
-                .SetSurfaceBackgroundPatternColor(ogss.SurfaceBackgroundPatternColor)
-                .SetSurfaceBackgroundPatternVisible(false);
-
-                //var info = GetShareInfo(commandData.Application.Application);
-                var views = document.GetElements<View>().Where(x => x.Name.Contains("出图-"));
-                if (views.Count() == 0) return;
                 foreach (var v in views)
                 {
-                    InitialMep(v, overridess);
+                    //InitialMep(v, overridess);
+                    ResetParameterFileterPattern(v);
                 }
 
             }, "清除填充");
@@ -112,26 +67,21 @@ namespace IronMan.Revit.Commands.PushButtons
             }
         }
 
-        //获取共享参数
-        private string GetShareInfo(Autodesk.Revit.ApplicationServices.Application revitApp)
+        private void ResetParameterFileterPattern(View view)
         {
-            StringBuilder str = new StringBuilder();
-            DefinitionFile definitionFile = revitApp.OpenSharedParameterFile();
-            DefinitionGroups groups = definitionFile.Groups;
-            foreach (DefinitionGroup group in groups)
+            Document document = view.Document;
+            var filterIds = view.GetFilters();
+            foreach (var filterId in filterIds)
             {
-                foreach (Definition definition in group.Definitions)
-                {
-                    string name = definition.Name;
-                    ParameterType type = definition.ParameterType;
-                    str.AppendLine(string.Format("{0}---{1}", name, type.ToString()));
-                }
+                OverrideGraphicSettings ogs  = view.GetFilterOverrides(filterId);
+                var newOgs = new OverrideGraphicSettings();
+                newOgs.SetProjectionLinePatternId(ogs.ProjectionLinePatternId)
+                    .SetProjectionLineColor(ogs.ProjectionLineColor)
+                    .SetProjectionLineWeight(ogs.ProjectionLineWeight)
+                    .SetSurfaceTransparency(ogs.Transparency);
+                view.SetFilterOverrides(filterId, newOgs);
             }
-            return str.ToString();
-
         }
-
-
     }
 }
 

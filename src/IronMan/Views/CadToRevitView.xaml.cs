@@ -28,6 +28,10 @@ namespace IronMan.Revit.Views
             InitializeComponent();
             //this.Unloaded += CadToRevitView_Unloaded;
             Messenger.Default.Register<bool>(this, CloseWindow);
+            //Button button = new Button();
+            //DependencyObject dependencyObject = button as DependencyObject;
+            //DependencyObject dependencyObject = new DependencyObject();
+            //Button button = (Button)dependencyObject;
         }
 
         private void CloseWindow(bool obj)

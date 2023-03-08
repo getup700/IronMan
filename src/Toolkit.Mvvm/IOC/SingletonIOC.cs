@@ -25,7 +25,7 @@ namespace IronMan.Revit.Toolkit.Mvvm.IOC
                 return _container;
             }
         }
-
+        
         public SimpleIoc Locator => Container;
     }
 }

@@ -44,25 +44,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NPOI" Version="2.5.6" />
+		<PackageReference Include="NPOI" Version="2.6.0" />
 		<PackageReference Include="Revit_API_x64" Version="2019.0.0" Condition="'$(Configuration)'=='RVT_2019'" />
 		<PackageReference Include="Revit_API_x64" Version="2020.0.0" Condition="'$(Configuration)'=='Debug20'" />
-		<PackageReference Include="Revit_API_x64" Condition="'$(Configuration)'=='Debug19'">
-		  <Version>2019.0.0</Version>
-		</PackageReference>
 		<PackageReference Include="Revit_API_x64" Version="2020.0.0" Condition="'$(Configuration)'=='RVT_2020'" />
 		<PackageReference Include="Revit_API_x64" Version="2021.0.0" Condition="'$(Configuration)'=='RVT_2021'" />
 		<PackageReference Include="Revit_API_x64" Version="2022.0.0" Condition="'$(Configuration)'=='RVT_2022'" />
+		<PackageReference Include="Revit_API_x64" Version="2020.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="PresentationCore" />
 		<Reference Include="System.Windows.Presentation" />
 		<Reference Include="WindowsBase" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="DB\" />
 	</ItemGroup>
 
 </Project>

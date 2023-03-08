@@ -1,6 +1,8 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Mechanical;
 using Autodesk.Revit.UI;
+using GalaSoft.MvvmLight.Messaging;
 using IronMan.Revit.Toolkit.Mvvm;
 using IronMan.Revit.Toolkit.Mvvm.Extension;
 using IronMan.Revit.Toolkit.Mvvm.IOC;
@@ -13,28 +15,35 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using IronMan.Revit.Toolkit.Extension;
-using Autodesk.Revit.DB.Mechanical;
+using IronMan.Revit.Utils;
 
 namespace IronMan.Revit.Commands
 {
     [Transaction(TransactionMode.Manual)]
     [Journaling(JournalingMode.NoCommandData)]
     [Regeneration(RegenerationOption.Manual)]
-    public class ModeCommand : Toolkit.Mvvm.CommandBase
+    public class ShieldF1Command : Toolkit.Mvvm.CommandBase
     {
+        private static bool _hookSwitch = false;
         public override Window CreateMainWindow()
         {
-            return SingletonIOC.Current.Container.Resolve<ModeView, ModeViewModel>(true);
+            return null;
         }
 
         public override Result Execute(ref string message, ElementSet elements)
         {
-            TransactionStatus status = DataContext.GetDocument().NewTransactionGroup("模态窗口", () =>
+            ThreadHook threadHook = SingletonIOC.Current.Container.GetInstance<ThreadHook>();
+            if (_hookSwitch)
             {
-                MainWindow.Show();
-                return true;
-            });
-            return status == TransactionStatus.Committed ? Result.Succeeded : Result.Cancelled;
+                threadHook.SetHook();
+                _hookSwitch = true;
+            }
+            else
+            {
+                threadHook.UnHook();
+                _hookSwitch= false;
+            }
+            return Result.Succeeded;
         }
     }
 }

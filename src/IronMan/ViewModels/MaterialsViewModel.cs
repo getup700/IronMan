@@ -62,11 +62,12 @@ namespace IronMan.Revit.ViewModels
         {
             get => new RelayCommand(() =>
             {
-                MessengerInstance.Send(new NotificationMessageAction<MaterialPlus>(null,
+                //sender的作用是什么，能不能在消息被接收后改自己的值。
+                MessengerInstance.Send(new NotificationMessageAction<MaterialPlus>(
+                    null,
                     new MaterialDialogViewModel(this._materialService),
                     "Create",
-                    (e) => MaterialsPlusCol.Insert(0, e)),
-                    Contants.Tokens.MaterialDialogWindow);
+                    (materialPlus) => MaterialsPlusCol.Insert(0, materialPlus)), Contants.Tokens.MaterialDialogWindow);
             });
         }
 

@@ -17,5 +17,10 @@ namespace IronMan.Revit.Toolkit.Mvvm.Interfaces
         /// </summary>
         /// <returns></returns>
         Result Initial();
+
+        Result CreatePanel();
+
+        void CreateTab();
+
     }
 }

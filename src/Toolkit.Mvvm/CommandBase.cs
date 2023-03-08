@@ -3,6 +3,7 @@ using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.UI;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Messaging;
 using IronMan.Revit.Toolkit.Mvvm.Interfaces;
 using IronMan.Revit.Toolkit.Mvvm.IOC;
 using IronMan.Revit.Toolkit.Mvvm.Service.ExtensibleService;
@@ -17,8 +18,9 @@ using UIFramework;
 
 namespace IronMan.Revit.Toolkit.Mvvm
 {
-    public abstract class CommandBase : IExternalCommand
+    public abstract class CommandBase : IExternalCommand, IExternalCommandAvailability
     {
+        private bool _abailable = true;
         //自定义服务注入
         public virtual void RegisterTypes(SimpleIoc simpleIoc) { }
 
@@ -57,6 +59,13 @@ namespace IronMan.Revit.Toolkit.Mvvm
             //SingletonIOC.Current.Container.Unregister<Document>();
             return result;
         }
+
+        public virtual bool IsCommandAvailable(UIApplication applicationData, CategorySet selectedCategories)
+        {
+            Messenger.Default.Register<bool>(this,this, result => _abailable = result);
+            return _abailable;
+        }
+
         public Window MainWindow { get; set; }
 
         //如果没有窗体可以通过DataContext编写，不用再写UIDocument，Document

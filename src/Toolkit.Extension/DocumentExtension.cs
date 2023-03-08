@@ -24,12 +24,20 @@ namespace IronMan.Revit.Toolkit.Extension
         [DebuggerStepThrough]
         public static TransactionStatus NewTransactionGroup(this Document document, string name, Func<bool> func)
         {
+            if (document==null)
+            {
+                throw new ArgumentNullException(nameof(document));
+            }
             TransactionStatus status = TransactionStatus.Uninitialized;
             using (TransactionGroup group = new TransactionGroup(document, name))
             {
                 group.Start();
                 bool result = func.Invoke();
                 status = result ? group.Assimilate() : group.RollBack();
+                if (status!= TransactionStatus.Committed)
+                {
+                    Console.WriteLine("log");
+                }
             }
             return status;
         }
@@ -37,22 +45,36 @@ namespace IronMan.Revit.Toolkit.Extension
         [DebuggerStepThrough]
         public static void NewTransaction(this Document document, Action action, string name = "Default Transaction Name")
         {
+            if (document == null)
+            {
+                throw new ArgumentNullException(nameof(document));
+            }
             using (Transaction transaction = new Transaction(document, name))
             {
                 transaction.Start();
                 action.Invoke();
-                transaction.Commit();
+                if (transaction.Commit()!=TransactionStatus.Committed)
+                {
+                    Console.WriteLine("log");
+                }
             }
         }
 
         [DebuggerStepThrough]
         public static void NewSubTransaction(this Document document, Action action)
         {
+            if (document == null)
+            {
+                throw new ArgumentNullException(nameof(document));
+            }
             using (SubTransaction transaction = new SubTransaction(document))
             {
                 transaction.Start();
                 action.Invoke();
-                transaction.Commit();
+                if (transaction.Commit() != TransactionStatus.Committed)
+                {
+                    Console.WriteLine("log");
+                }
             }
         }
 
@@ -138,6 +160,16 @@ namespace IronMan.Revit.Toolkit.Extension
         /// <param name="predicate"></param>
         /// <returns></returns>
         public static IEnumerable<T> GetElements<T>(this Document document, Func<T, bool> predicate = null) where T : Element
+        {
+            IEnumerable<T> source = GetElements(document).OfClass(typeof(T)).Cast<T>();
+            if (predicate != null)
+            {
+                source = source.Where(predicate);
+            }
+            return source;
+        }
+
+        public static IEnumerable<T> GetSpatialElement<T>(this Document document,Func<T,bool> predicate =null) where T:SpatialElement
         {
             IEnumerable<T> source = GetElements(document).OfClass(typeof(T)).Cast<T>();
             if (predicate != null)

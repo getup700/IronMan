@@ -14,10 +14,126 @@
         mc:Ignorable="d"
         Title="FilterView"
         x:Name="MainWindow"
-        Background="{DynamicResource MainBackground }"
+        Background="{DynamicResource MainBackground}"
         Height="600"
         Width="1100">
     <Window.Resources>
+        <!--<DataTemplate x:Key="myDataTemplate">
+            <Border CornerRadius="5">
+                <GroupBox Header="批量操作">
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Border CornerRadius="5" Background="LightGray">
+                            <TextBlock Text="标签管理"/>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding EditFiltersLabelCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Border>
+                        <Border CornerRadius="5" Background="LightGray">
+                            <TextBlock Text="标签管理"/>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding EditFiltersLabelCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Border>
+                        <Border CornerRadius="5" Background="LightGray">
+                            <TextBlock Text="标签管理"/>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding EditFiltersLabelCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Border>
+                        <Border CornerRadius="5" Background="LightGray">
+                            <TextBlock Text="标签管理"/>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding EditFiltersLabelCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Border>
+                    </StackPanel>
+                </GroupBox>
+            </Border>
+        </DataTemplate>-->
+        <!--<DataTemplate x:Key="filterLableItemTemplate">
+            <Border Height="40"
+                            Background="AliceBlue"
+                            Margin="3"
+                            CornerRadius="5">
+                <Grid>
+                    <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center">
+                        <CheckBox Margin="5,0"
+                                          x:Name="isApplied"
+                                          VerticalAlignment="Center"
+                                          Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window},Path=DataContext.AppliedCommand}"
+                                          CommandParameter="{Binding}"
+                                          IsChecked="{Binding IsApplied}">
+                        </CheckBox>
+                        <TextBlock Text="{Binding Name}"
+                                           VerticalAlignment="Center" />
+                        <Border>
+                            <ListBox ItemsSource="{Binding Path=Labels}"
+                                             Style="{DynamicResource null}"
+                                             BorderBrush="Transparent"
+                                             IsEnabled="False"
+                                             Margin="10,0"
+                                             BorderThickness="0"
+                                             Background="Transparent"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                             ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="3">
+                                            <TextBlock Text="{Binding}"
+                                                               Background="Transparent"
+                                                               VerticalAlignment="Center"
+                                                               FontSize="10"
+                                                               TextAlignment="Center" />
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <ListBox.Template>
+                                    <ControlTemplate TargetType="{x:Type ListBox}">
+                                        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                                              VerticalScrollBarVisibility="Auto">
+                                            <WrapPanel Orientation="Horizontal"
+                                                               IsItemsHost="True"
+                                                               Background="Transparent"
+                                                               ScrollViewer.CanContentScroll="True" />
+                                        </ScrollViewer>
+                                    </ControlTemplate>
+                                </ListBox.Template>
+                            </ListBox>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Right">
+                        <ToggleButton Style="{StaticResource ToggleButtonSwitch}"
+                                              Margin="5"
+                                              x:Name="isVisiable"
+                                              Height="15"
+                                              Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.VisibilityCommand}"
+                                              CommandParameter="{Binding}"
+                                              IsChecked="{Binding IsVisible}" />
+
+                        <Border Height="18"
+                                        Margin="3"
+                                        BorderBrush="Black"
+                                        BorderThickness="0.5"
+                                        CornerRadius="3">
+                            <Button Content="Label"
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.EditLabelCommand}"
+                                            CommandParameter="{Binding}" />
+
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>-->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/IronMan.Revit;component/Dictionary.xaml" />
@@ -36,29 +152,11 @@
                     <x:Type TypeName="enum:Source" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
-            <!--<SolidColorBrush x:Key="mainBackground"
-                             Color="White" />-->
-            <!--<Style TargetType="GroupBox"
-                   x:Key="InitialGroupBoxStyle">
-                <Setter Property="FontSize"
-                        Value="10" />
-                <Setter Property="BorderThickness"
-                        Value="0.2" />
-                <Setter Property="Margin"
-                        Value="5,0" />
-                <Setter Property="FontFamily"
-                        Value="Light" />
-            </Style>-->
-            <!--<converter:DataSourceConverter x:Key="sourceConverter" />
-            <converter:VisibilityConverter x:Key="visibilityConverter" />
-            <converter:ColorConverter x:Key="colorConverter" />-->
-
         </ResourceDictionary>
     </Window.Resources>
     <Window.Triggers>
         <EventTrigger RoutedEvent="ToggleButton.Checked"
                       SourceName="sourceToggleButton">
-
         </EventTrigger>
     </Window.Triggers>
     <Grid Margin="5">
@@ -148,7 +246,7 @@
                                            HorizontalAlignment="Center" />
                             </Border>
                         </ToggleButton>
-                        <TextBox Text="{Binding FilterKeywords,UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Template="{DynamicResource RoundCornerTextBoxStyle}" Text="{Binding FilterKeywords,UpdateSourceTrigger=PropertyChanged}"
                                  Width="100"
                                  TextAlignment="Left"
                                  Style="{StaticResource TextBox.Small}"
@@ -320,6 +418,7 @@
                   x:Name="filtersListBox"
                   Background="Transparent"
                   ItemsSource="{Binding Filters}"
+                  
                   Margin="5">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
@@ -351,7 +450,7 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
+            <!--<ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border Height="40"
                             Background="AliceBlue"
@@ -406,7 +505,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal"
                                         HorizontalAlignment="Right">
-                                <!--<Border Width="18"
+                                <Border Width="18"
                                         Height="18"
                                         Background="{Binding Color, Converter={StaticResource colorConverter}}"
                                         BorderBrush="Gray"
@@ -426,7 +525,7 @@
                                         BorderBrush="Gray"
                                         BorderThickness="1"
                                         Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.OverrideColorCommand}"
-                                        CommandParameter="{Binding}" />-->
+                                        CommandParameter="{Binding}" />
 
                                 <ToggleButton Style="{StaticResource ToggleButtonSwitch}"
                                               Margin="5"
@@ -447,7 +546,7 @@
 
                                 </Border>
 
-                                <!--<Border Height="18"
+                                <Border Height="18"
                                         Margin="3"
                                         BorderBrush="Black"
                                         BorderThickness="0.5"
@@ -455,14 +554,14 @@
                                     <Button Content="Filter"
                                             Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.EditFilterCommand}"
                                             CommandParameter="{Binding}" />
-                                </Border>-->
+                                </Border>
                             </StackPanel>
 
                         </Grid>
                     </Border>
 
                 </DataTemplate>
-            </ListBox.ItemTemplate>
+            </ListBox.ItemTemplate>-->
         </ListBox>
 
 

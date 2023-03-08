@@ -2,6 +2,7 @@
 using IronMan.Revit.Entity;
 using IronMan.Revit.Interfaces;
 using IronMan.Revit.IServices;
+using IronMan.Revit.Toolkit.Extension;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
@@ -108,7 +109,7 @@ namespace IronMan.Revit.Services
                 row.GetCell(4).CellStyle = nummericalStyle;
             }
 
-            workbook.Write(fileStream);
+            workbook.Write(fileStream,true);
             workbook.GetSheetAt(0).AutoSizeColumn(0);
             workbook.GetSheetAt(0).AutoSizeColumn(1);
             workbook.GetSheetAt(0).AutoSizeColumn(2);
@@ -123,5 +124,24 @@ namespace IronMan.Revit.Services
         {
             throw new NotImplementedException();
         }
+
+        public List<CurveLoop> GetRoomCureveLoops(RoomProxy roomProxy)
+        {
+            List<CurveLoop> loops = new List<CurveLoop>();
+            var options = new SpatialElementBoundaryOptions();
+            IList<IList<BoundarySegment>> segmentsLists = roomProxy._room.GetBoundarySegments(options);
+            foreach (IList<BoundarySegment> segment in segmentsLists)
+            {
+                CurveLoop curveList = new CurveLoop();
+                foreach (BoundarySegment s in segment)
+                {
+                    curveList.Append(s.GetCurve());
+                }
+                loops.Add(curveList);
+            }
+            return loops;
+        }
+
+
     }
 }

@@ -9,12 +9,11 @@ namespace IronMan.Revit.Toolkit.Extension
 {
     public static class ElementIdExtension
     {
-        public static Element ConvertElement (this ElementId id ,Document document)
+        public static Element ConvertElement(this ElementId id, Document document)
         {
             try
             {
                 return document.GetElement(id);
-
             }
             catch (Exception ex)
             {

@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using IronMan.Revit.Contants;
 using IronMan.Revit.Entity;
+using IronMan.Revit.IServices;
 using IronMan.Revit.Services;
 using IronMan.Revit.Toolkit.Mvvm.Interfaces;
 using NPOI.OpenXmlFormats.Spreadsheet;
@@ -17,16 +18,23 @@ namespace IronMan.Revit.ViewModels
 {
     public class ModeViewModel : ViewModelBase
     {
-        private WallService _quicklyWallService;
-        private IDataContext _dataContext;
+        private readonly IDataContext _dataContext;
+        private readonly IExternalEventService _externalEventService;
 
-        public ModeViewModel(WallService quicklyWallService,IDataContext dataContext)
+        private ElementId _elementId;
+        private Reference _reference;
+
+        public ModeViewModel(IDataContext dataContext, IExternalEventService externalEventService)
         {
-            _quicklyWallService = quicklyWallService;
             _dataContext = dataContext;
+            _externalEventService = externalEventService;
         }
 
-        private Reference reference => _dataContext.GetUIDocument().Selection.PickObject(Autodesk.Revit.UI.Selection.ObjectType.Element, "Select Element");
+        public ElementId ElementId
+        {
+            get { return _elementId; }
+            set { _elementId = value; RaisePropertyChanged(); }
+        }
 
         /// <summary>
         /// 使用模态窗口阻塞线程，选择元素也是阻塞线程。
@@ -34,10 +42,11 @@ namespace IronMan.Revit.ViewModels
         /// </summary>
         public RelayCommand SubmitCommand => new RelayCommand(() =>
         {
-            //var wallProxy = _quicklyWallService.SelectWall();
-            var wallProxy = _dataContext.GetDocument().GetElement(reference);
-            MessageBox.Show($"{wallProxy.Name}");
-            MessengerInstance.Send<bool>(true,Tokens.CloseWindow);
+            _externalEventService.Raise((uiApp) =>
+            {
+                _reference = _dataContext.GetUIDocument().Selection.PickObject(Autodesk.Revit.UI.Selection.ObjectType.Element, "Select Element");
+                ElementId = _reference.ElementId;
+            });
         });
 
 

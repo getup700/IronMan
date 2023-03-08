@@ -10,6 +10,10 @@ namespace IronMan.Revit.ViewModels
 {
     public class ProgerssBarDialogViewModel:ViewModelBase
     {
+        private int _maximum;
+        private int _value;
+        private string _title;
+
         public ProgerssBarDialogViewModel()
         {
             MessengerInstance.Register<int>(this, Contants.Tokens.ProgressBarMaximum, (max) =>
@@ -23,11 +27,6 @@ namespace IronMan.Revit.ViewModels
                 Title = $"{Value}/{Maximum}_{title}";
             });
         }
-
-        private int _maximum;
-        private int _value;
-        private string _title;
-
         public string Title
         {
             get { return _title; }

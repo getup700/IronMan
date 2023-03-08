@@ -23,6 +23,7 @@ using System.IO;
 using System.Windows;
 using System.Diagnostics;
 using IronMan.Revit.Entity.Toolkit;
+using IronMan.Revit.Utils;
 
 namespace IronMan.Revit
 {
@@ -107,6 +108,8 @@ namespace IronMan.Revit
             string path3 = this.GetType().Assembly.Location;
             string handyControlPath = Path.Combine(myPath, "HandyControl.dll");
             Assembly.LoadFrom(handyControlPath);
+
+            container.Register<ThreadHook>(() => new ThreadHook());
         }
         public sealed override void RegisterSchema(IDataStorage dataStorage)
         {
