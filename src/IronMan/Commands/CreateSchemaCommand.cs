@@ -100,7 +100,6 @@ namespace IronMan.Revit.Commands
             //    RvtEntity entity = new RvtEntity(schema);
             //    //entity.Set(nameof(SampleProfile.TestDemo), new RvtEntity(subSchema));
 
-
             //    //var field = schema.GetField("float");
             //    //entity.Set<double>("double", 12, DisplayUnitType.DUT_MILLIMETERS);
             //    //entity.Set<float>(field, 12, DisplayUnitType.DUT_GENERAL);

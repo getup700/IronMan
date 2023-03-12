@@ -1,0 +1,18 @@
+﻿<Window x:Class="IronMan.Revit.Views.PropertiesView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IronMan.Revit.Views"
+        mc:Ignorable="d"
+        Title="PropertiesView" Height="200" Width="150">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <TextBox Text="{Binding Time}"/>
+            <TextBox Text="{Binding PropertiesInfo}" />
+            <Button Content="Manual Update" Command="{Binding UpdateTimeCommand}"/>
+
+        </StackPanel>
+
+    </Grid>
+</Window>

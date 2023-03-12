@@ -240,14 +240,7 @@ namespace IronMan.Revit.Toolkit.Extension
             return document.GetElement(reference);
         }
 
-        public static void TransientDisplay(this Document document, Line element)
-        {
-            document.MakeTransientElements(new TransientElementMaker(() =>
-            {
-
-            }));
-        }
-
+ 
         #endregion
     }
 }

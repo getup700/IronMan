@@ -55,12 +55,7 @@ namespace IronMan.Revit.Commands
             {
                 instanceInfo += $"\t\t{item.Id}\t\t{item.Name}\n";
             }
-
             TaskDialog.Show("Title", instanceInfo);
-
-            
-
-
 
             return Result.Succeeded;
         }

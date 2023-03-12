@@ -25,6 +25,8 @@ namespace IronMan.Revit.ViewModels
         private readonly IExternalEventService _externalEventService;
         private readonly IFamilyService _familyService;
 
+        private List<Level> _levelList = new List<Level>();
+
         public QuicklyWallViewModel(
             IWallService service,
             IDataContext dataContext,
@@ -52,7 +54,7 @@ namespace IronMan.Revit.ViewModels
         public List<Level> LevelList
         {
             get => _dataContext.GetDocument().GetElements<Level>().Cast<Level>().ToList();
-            set { }
+            set => _levelList = value;
         }
 
         private WallProxy _wallProxy;
@@ -70,7 +72,7 @@ namespace IronMan.Revit.ViewModels
                         {
                             Element element = UIDocument.Document.GetElement(
                                 UIDocument.Selection.PickObject(Autodesk.Revit.UI.Selection.ObjectType.Element,
-                                new SelectionFilter(x =>x.GetType() == typeof(Wall)),
+                                new SelectionFilter(x => x.GetType() == typeof(Wall)),
                                 "请选择要修改的墙"));
                             _wallProxy = new WallProxy(element as Wall);
                             var dto = new DTO_Wall()
@@ -104,7 +106,7 @@ namespace IronMan.Revit.ViewModels
                         }
                         catch (Exception)
                         {
-                            if(_wallProxy!=null)
+                            if (_wallProxy != null)
                             {
                                 throw new Exception("项目未加载族“隔板支撑”，请加载后重试");
                             }

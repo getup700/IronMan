@@ -2,17 +2,13 @@
 using IronMan.Revit.Toolkit.Extension;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using IronMan.Revit.Toolkit.Mvvm.Interfaces;
-using System.Windows.Forms.PropertyGridInternal;
 using IronMan.Revit.Commands;
 using Autodesk.Revit.DB;
 using IronMan.Revit.Properties;
-using NPOI.SS.Formula.Functions;
 using System.Linq;
 using IronMan.Revit.Commands.PushButtons;
 using IronMan.Revit.Entity;
-using IronMan.Revit.Commands.OfficalCommand;
 using IronMan.Revit.Availabilities;
 using UIFramework;
 
@@ -50,6 +46,12 @@ namespace IronMan.Revit
 
             _uiProvider.GetUIApplication().AddPanel(_tabName, "建筑", (archiPanel) =>
             {
+                archiPanel.CreateButton<ShowSelectInfoCommands>((b) =>
+                {
+                    b.Text = "属性窗口";
+                    b.LargeImage = Resources.Materials.ConvertToBitmapSource();
+                    b.ToolTip = "模态窗口、对话框";
+                });
                 archiPanel.CreateButton<MaterialsCommand>((b) =>
                 {
                     b.Text = "材质管理";

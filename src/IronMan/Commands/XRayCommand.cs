@@ -27,37 +27,43 @@ namespace IronMan.Revit.Commands
             {
                 if (uiDoc.ActiveGraphicalView is View3D view)
                 {
+                    //构造射线
                     ReferenceIntersector intersector = new ReferenceIntersector(view);
                     intersector.SetTargetElementIds(doc.GetElementInstances(BuiltInCategory.OST_Walls).ToList().ConvertAll(w => w.Id));
                     intersector.SetFilter(new ElementCategoryFilter(BuiltInCategory.OST_Walls));
                     intersector.TargetType = FindReferenceTarget.Face;
-                    MessageBox.Show(doc.GetElementInstances(BuiltInCategory.OST_Walls).Count().ToString());
+                    //MessageBox.Show(doc.GetElementInstances(BuiltInCategory.OST_Walls).Count().ToString());
                     BoundingBoxXYZ boundingBox = element.get_BoundingBox(view);
                     XYZ centerPoint = (boundingBox.Max + boundingBox.Min) / 2;
 
-                    //ReferenceWithContext referenceWithContext = intersector.FindNearest(centerPoint, XYZ.BasisX);
-                    //if (referenceWithContext == null) return Result.Cancelled;
-                    //Line line = Line.CreateBound(centerPoint, referenceWithContext.GetReference().GlobalPoint);
-                    //doc.TransientDisplay(line);
-                    //selection.SetElementIds(new List<ElementId>() { referenceWithContext.GetReference().ElementId });
+                    //射线查询
+                    ReferenceWithContext referenceWithContext = intersector.FindNearest(centerPoint, XYZ.BasisX);
+                    if (referenceWithContext == null) return Result.Cancelled;
+                    Line line = Line.CreateBound(centerPoint, referenceWithContext.GetReference().GlobalPoint);
+                    Line line1 = Line.CreateBound(XYZ.Zero, XYZ.Zero);
+                    doc.TransientDisplay(line1);
+                    selection.SetElementIds(new List<ElementId>() { referenceWithContext.GetReference().ElementId });
 
                     IList<ReferenceWithContext> referenceWithContexts = intersector.Find(centerPoint, XYZ.BasisX);
+                    ElementSet elementSet = new ElementSet();
                     string info = string.Empty;
                     foreach (var item in referenceWithContexts)
                     {
                         Element e = doc.GetElement(item.GetReference());
                         info += $"{e.Name}\t{e.Category.Name}\t{e.Id}\n";
+                        elementSet.Insert(e);
                     }
                     MessageBox.Show(info);
                     IEnumerable<ElementId> elementIds = referenceWithContexts.ToList().ConvertAll(x => x.GetReference().ElementId);
                     if (referenceWithContexts.Count() == 0) return Result.Cancelled;
                     selection.SetElementIds(elementIds.ToList());
                     MessageBox.Show(referenceWithContexts.Count().ToString());
+                    
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+               message = ex.Message;
             }
             return Result.Succeeded;
         }

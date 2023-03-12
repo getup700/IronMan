@@ -24,7 +24,7 @@ namespace IronMan.Revit.Commands.PushButtons
             var app = commandData.Application.Application;
             var c = app.BackgroundColor;
             app.BackgroundColor = new Color((byte)(255 - c.Red), (byte)(255 - c.Green), (byte)(255 - c.Blue));
-            Messenger.Default.Send(true, "MaterialCommand");
+            //Messenger.Default.Send(true, "MaterialCommand");
            //var uiProvider = SingletonIOC.Current.Container.GetInstance<IApplicationUI>();
            // uiProvider.Initial();
             return Result.Succeeded;
