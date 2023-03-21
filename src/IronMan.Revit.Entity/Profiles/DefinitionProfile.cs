@@ -10,7 +10,7 @@ namespace IronMan.Revit.Entity.Profiles
 {
     public class DefinitionProfile
     {
-        protected DefinitionInfo CreateParameter([CallerMemberName] string name = null,
+        public DefinitionInfo CreateParameter([CallerMemberName] string name = null,
             BuiltInParameterGroup parameterGroup = BuiltInParameterGroup.INVALID, 
             ParameterType parameterType = ParameterType.Invalid,
             UnitType unitType = UnitType.UT_Number)

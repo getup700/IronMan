@@ -103,7 +103,7 @@ namespace IronMan.Revit.ViewModels
         private void SelectMepCurve()
         {
             Selection selection = _dataContext.GetUIDocument().Selection;
-            List<Element> elements = selection.GetElementIds().Select(x => _dataContext.GetDocument().GetElement(x)).ToList();
+            List<Element> elements = selection.GetElementIds().Select(x => x.ConvertElement(_dataContext.GetDocument())).ToList();
             if (elements.Count != 0 && elements.Where(x => typeof(Duct) == x.GetType()).Count() != 0)
             {
                 MEPCurve duct = elements.Where(x => typeof(Duct) == x.GetType()).FirstOrDefault() as MEPCurve;

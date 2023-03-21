@@ -21,7 +21,6 @@ namespace IronMan.Revit.Commands
     [Regeneration(RegenerationOption.Manual)]
     public class CreateSchemaCommand : IExternalCommand
     {
-        private readonly string SchemaGUID = "36BEB4F9-71B5-46F6-A214-A4890DF3B9A9";
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             UIDocument uiDoc = commandData.Application.ActiveUIDocument;

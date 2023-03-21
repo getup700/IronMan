@@ -13,6 +13,7 @@ using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using IronMan.Revit.IServices;
 using IronMan.Revit.Toolkit.Extension;
 using IronMan.Revit.Toolkit.Mvvm.Interfaces;
 using IronMan.Revit.Toolkit.Mvvm.IOC;
@@ -28,29 +29,33 @@ namespace IronMan.Revit.ViewModels
     internal class ProperitesViewModel : ViewModelBase
     {
         private readonly IDataContext _dataContext;
+        private readonly IExternalEventService _externalEventService;
         private string _oldDateTime;
         private TextNote _textNote;
         private string _time;
         private string _propertiesInfo;
 
-        public ProperitesViewModel(IDataContext dataContext)
+        public ProperitesViewModel(IDataContext dataContext,IExternalEventService externalEventService)
         {
             _time = "dddd";
-            _dataContext= dataContext;
-            _dataContext.GetUIApplication().Idling += IDling_ShowSelectInfo;
-            var view = SingletonIOC.Current.Container.GetInstance<PropertiesView>();
-            view.Closing += (sender, args) =>
-            {
-                _dataContext.GetUIApplication().Idling -= IDling_ShowSelectInfo;
-                _dataContext.GetUIApplication().Idling -= IDling_Update;
-            };
+            _oldDateTime = DateTime.Now.ToString();
+            _dataContext = dataContext;
+            _externalEventService= externalEventService; _dataContext.GetUIApplication().Idling += IDling_ShowSelectInfo;
             _dataContext.GetDocument().NewTransaction(() =>
             {
                 ElementId elementId = _dataContext.GetDocument().GetDefaultElementTypeId(ElementTypeGroup.TextNoteType);
                 _textNote = TextNote.Create(_dataContext.GetDocument(), _dataContext.GetDocument().ActiveView.Id, XYZ.Zero, DateTime.Now.ToString(), elementId);
             });
-            _oldDateTime = DateTime.Now.ToString();
             _dataContext.GetUIApplication().Idling += IDling_Update;
+            var view = SingletonIOC.Current.Container.GetInstance<PropertiesView>();
+            _externalEventService.Raise(uiapp =>
+            {
+                view.Closing += (sender, args) =>
+                {
+                    _dataContext.GetUIApplication().Idling -= IDling_ShowSelectInfo;
+                    _dataContext.GetUIApplication().Idling -= IDling_Update;
+                };
+            });
         }
 
         public string Time
@@ -96,5 +101,6 @@ namespace IronMan.Revit.ViewModels
             Time = DateTime.Now.ToString();
         });
 
+        
     }
 }

@@ -16,7 +16,6 @@ namespace IronMan.Revit.Toolkit.Mvvm
     [DebuggerStepThrough]
     public class DataContext : IDataContext
     {
-        private UIControlledApplication _uicApp;
         private IUIProvider _uiProvider;
         public DataContext(IUIProvider uiProvider)
         {

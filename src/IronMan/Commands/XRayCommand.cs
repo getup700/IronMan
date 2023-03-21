@@ -3,7 +3,6 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using IronMan.Revit.Toolkit.Extension;
-using IronMan.Revit.Toolkit.Extension.Class;
 using System;
 using System.Collections.Generic;
 using System.Linq;

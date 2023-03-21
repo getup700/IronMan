@@ -143,7 +143,6 @@ namespace IronMan.Revit.Services
             }
             ISheet sheet = workbook.GetSheetAt(0);
             int startRow = 1;
-            int startColumn = 1;
             var decorationProfile = SingletonIOC.Current.Container.GetInstanceWithoutCaching<DecorationParameterProfile>();
             GetDecoraParameter(decorationProfile);
             List<DecorationParameterProfile> profiles = new List<DecorationParameterProfile>();
