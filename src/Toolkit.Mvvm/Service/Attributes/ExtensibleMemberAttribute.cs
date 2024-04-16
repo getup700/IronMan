@@ -15,7 +15,7 @@ namespace IronMan.Revit.Toolkit.Mvvm.Service.Attributes
 
         }
 
-        public ExtensibleMemberAttribute(UnitType unitType,DisplayUnitType displayUnitType)
+        public ExtensibleMemberAttribute(UnitType unitType, DisplayUnitType displayUnitType)
         {
             UnitType = unitType;
             DisplayUnitType = displayUnitType;

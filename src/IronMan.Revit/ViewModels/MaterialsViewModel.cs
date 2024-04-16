@@ -27,12 +27,13 @@ namespace IronMan.Revit.ViewModels
         private readonly IUIProvider _uiProvider;
         private readonly IDataContext _dataContext;
 
-        public MaterialsViewModel(IMaterialService materialService, IProgressBarService progressBarService, IUIProvider uIProvider,IDataContext dataContext)
+        public MaterialsViewModel(IMaterialService materialService, IProgressBarService progressBarService, IUIProvider uIProvider, IDataContext dataContext)
         {
             _materialService = materialService;
             _progressBarService = progressBarService;
             _uiProvider = uIProvider;
             _dataContext = dataContext;
+
             GetElements();
         }
 
@@ -124,10 +125,19 @@ namespace IronMan.Revit.ViewModels
         private void GetElements()
         {
             //MaterialsPlusCol = new ObservableCollection<MaterialPlus>(_materialService.GetElements(e => string.IsNullOrEmpty(Keyword) || e.Name.Contains(Keyword)));
-            MaterialsPlusCol=  new ObservableCollection<MaterialPlus>(
+            MaterialsPlusCol = new ObservableCollection<MaterialPlus>(
                 _dataContext.GetDocument().GetElements<Material>(
                     e => string.IsNullOrEmpty(Keyword) || e.Name.Contains(Keyword)).
                     Select(x => new MaterialPlus(x)));
+            var adds = new List<ObservableCollection<MaterialPlus>>();
+            for (int i = 0; i < 10000; i++)
+            {
+                var a = new ObservableCollection<MaterialPlus>(
+                  _dataContext.GetDocument().GetElements<Material>(
+                      e => string.IsNullOrEmpty(Keyword) || e.Name.Contains(Keyword)).
+                      Select(x => new MaterialPlus(x)));
+                adds.Add(a);
+            }
         }
 
         ///// <summary>

@@ -1,5 +1,4 @@
 ﻿using Autodesk.Revit.DB;
-using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,19 +32,19 @@ namespace IronMan.Revit.Entity
         public double Offset
         {
             get { return _offset; }
-            set { Set(ref _offset, value); }
+            set { SetProperty(ref _offset, value); }
         }
 
         public Level Level
         {
             get { return _level; }
-            set { Set(ref _level, value); }
+            set { SetProperty(ref _level, value); }
         }
 
         public Floor Floor
         {
             get => _floor;
-            set => Set(ref _floor, value);
+            set => SetProperty(ref _floor, value);
         }
 
         private Level GetLevel()

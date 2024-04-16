@@ -8,7 +8,7 @@
         d:DataContext="{d:DesignInstance Type=vm:FloorTypeManageViewModel}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         x:Name="floorTypeManageView"
         Title="FloorTypeManageView"
         Height="450"

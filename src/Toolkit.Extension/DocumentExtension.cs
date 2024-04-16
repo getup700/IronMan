@@ -78,28 +78,28 @@ namespace IronMan.Revit.Toolkit.Extension
             }
         }
 
-        public static AppearanceAssetElement CreateAppearanceElement(this Document document, string name)
-        {
-            AppearanceAssetElement element = null;
-            Asset asset = (from x in document.Application.GetAssets(AssetType.Appearance)
-                           where x.Name == "Generic"
-                           select x).FirstOrDefault<Asset>();
-            if (asset != null)
-            {
-                return AppearanceAssetElement.Create(document, name, asset);
-            }
-            AppearanceAssetElement element2 = document.GetElements<AppearanceAssetElement>().FirstOrDefault();
-            if (element2 != null)
-            {
-                element = element2.Duplicate(name);
-            }
-            return element;
-        }
+        //public static AppearanceAssetElement CreateAppearanceElement(this Document document, string name)
+        //{
+        //    AppearanceAssetElement element = null;
+        //    Asset asset = (from x in document.Application.GetAssets(AssetType.Appearance)
+        //                   where x.Name == "Generic"
+        //                   select x).FirstOrDefault<Asset>();
+        //    if (asset != null)
+        //    {
+        //        return AppearanceAssetElement.Create(document, name, asset);
+        //    }
+        //    AppearanceAssetElement element2 = document.GetElements<AppearanceAssetElement>().FirstOrDefault();
+        //    if (element2 != null)
+        //    {
+        //        element = element2.Duplicate(name);
+        //    }
+        //    return element;
+        //}
 
         public static void CreateParameterFilterElement(this Document document, string name, ICollection<ElementId> ids, FilterRule filterRule)
         {
             ElementParameterFilter elementFilter = new ElementParameterFilter(filterRule);
-            ParameterFilterElement element = ParameterFilterElement.Create(document, name, ids, elementFilter);
+            //ParameterFilterElement element = ParameterFilterElement.Create(document, name, ids, elementFilter);
         }
 
         #region Filter Element
@@ -161,7 +161,7 @@ namespace IronMan.Revit.Toolkit.Extension
         /// <returns></returns>
         public static IEnumerable<T> GetElements<T>(this Document document, Func<T, bool> predicate = null) where T : Element
         {
-            IEnumerable<T> source = GetElements(document).OfClass(typeof(T)).Cast<T>();
+            IEnumerable<T> source = GetElements(document).OfClass(typeof(T)).ToElements().Cast<T>();
             if (predicate != null)
             {
                 source = source.Where(predicate);

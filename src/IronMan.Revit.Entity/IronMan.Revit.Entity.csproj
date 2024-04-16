@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<PlatformTarget>x64</PlatformTarget>
-		<Configurations>Debug;Release;RVT_2019;RVT_2022;RVT_2020;RVT_2021;Debug20;Debug19</Configurations>
+		<Configurations>Debug;Release;RVT_2019;RVT_2022;RVT_2020;RVT_2021;Debug20;Debug19;Debug23;Debug18</Configurations>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='RVT_2019'">
@@ -11,7 +11,13 @@
 	<PropertyGroup Condition="'$(Configuration)'=='Debug20'">
 		<TargetFramework>net472</TargetFramework>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Debug23'">
+	  <TargetFramework>net48</TargetFramework>
+	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Debug19'">
+	  <TargetFramework>net472</TargetFramework>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Debug18'">
 	  <TargetFramework>net472</TargetFramework>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='RVT_2020'">
@@ -30,7 +36,13 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug20|AnyCPU'">
 		<Optimize>False</Optimize>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug23|AnyCPU'">
+	  <Optimize>False</Optimize>
+	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug19|AnyCPU'">
+	  <Optimize>False</Optimize>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug18|AnyCPU'">
 	  <Optimize>False</Optimize>
 	</PropertyGroup>
 

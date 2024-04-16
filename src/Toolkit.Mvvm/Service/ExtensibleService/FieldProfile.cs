@@ -56,6 +56,6 @@ namespace IronMan.Revit.Toolkit.Mvvm.Service.ExtensibleService
         }
 
         public List<FieldInfo> Fields { get; set; } = new List<FieldInfo>();
-
+        public UnitType UnitType { get; set; }
     }
 }

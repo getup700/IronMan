@@ -16,9 +16,10 @@ namespace IronMan.Revit.Entity.Profiles
     {
         private readonly IUIProvider _uiProvider;
 
-        public ParameterFilterInfo(IUIProvider uiProvider)
+        public ParameterFilterInfo(IUIProvider uiProvider, ParameterFilterProfile profile)
         {
             _uiProvider = uiProvider;
+            Profile = profile;
         }
 
         public Guid ApplicationUniqueId => _uiProvider.GetAddInId().GetGUID();
@@ -35,6 +36,6 @@ namespace IronMan.Revit.Entity.Profiles
 
         public Guid SchemaUniqueId => ExtensibleStorage.ParameterFilterInfoGuid;
 
-        public FieldProfile Profile => SingletonIOC.Current.Container.GetInstance<ParameterFilterProfile>();
+        public FieldProfile Profile { get; }
     }
 }

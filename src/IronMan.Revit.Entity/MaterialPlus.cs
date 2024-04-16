@@ -3,7 +3,6 @@ using Autodesk.Revit.DB.Visual;
 using IronMan.Revit.Toolkit.Extension;
 using System;
 using System.ComponentModel;
-using GalaSoft.MvvmLight;
 using System.Runtime.CompilerServices;
 
 namespace IronMan.Revit.Entity
@@ -35,11 +34,6 @@ namespace IronMan.Revit.Entity
             private set => _material = value;
         }
 
-        protected void Set<T>(T value, Action<T> callback, [CallerMemberName] string name =null)
-        {
-            callback.Invoke(value);
-            RaisePropertyChanged(name);
-        }
 
 
         public Color AppearanceColor
@@ -47,8 +41,7 @@ namespace IronMan.Revit.Entity
             get => _appearanceColor;
             set
             {
-                _appearanceColor = value;
-                RaisePropertyChanged();
+                SetProperty(ref _appearanceColor, value);
                 //Doc.NewTransaction(() => SetAppearanceColor(_appearanceColor));
             }
         }
@@ -58,7 +51,7 @@ namespace IronMan.Revit.Entity
             get => _color;
             set
             {
-                Set(ref _color, value);
+                SetProperty(ref _color, value);
                // Doc.NewTransaction(() => Material.Color = _color);
             }
         }
@@ -73,29 +66,25 @@ namespace IronMan.Revit.Entity
                 Asset asset = appearanceAssetElement.GetRenderingAsset();
                 if (asset.Size != 0)
                 {
-                    AssetPropertyDoubleArray4d property = asset?.FindByName("generic_diffuse") as AssetPropertyDoubleArray4d;
-                    return property?.GetValueAsColor();
+                    //AssetPropertyDoubleArray4d property = asset?.FindByName("generic_diffuse") as AssetPropertyDoubleArray4d;
+                    //return property?.GetValueAsColor();
                 }
             }
             return null;
         }
 
-        private AssetPropertyDoubleArray4d GetColorProperty(Asset asset)
-        {
-            return (AssetPropertyDoubleArray4d)asset?.FindByName("generic_diffuse");
-        }
 
         public void SetAppearanceColor(Color color)
         {
             ElementId id = Material.AppearanceAssetId;
             if (id != null && id.IntegerValue != -1)
             {
-                using (AppearanceAssetEditScope scope = new AppearanceAssetEditScope(Doc))
-                {
-                    Asset asset = scope.Start(id);
-                    GetColorProperty(asset)?.SetValueAsColor(color);
-                    scope.Commit(true);
-                }
+                //using (AppearanceAssetEditScope scope = new AppearanceAssetEditScope(Doc))
+                //{
+                //    Asset asset = scope.Start(id);
+                //    GetColorProperty(asset)?.SetValueAsColor(color);
+                //    scope.Commit(true);
+                //}
             }
         }
 

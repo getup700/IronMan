@@ -211,7 +211,7 @@ namespace IronMan.Revit.Services
                 {
                     OverrideGraphicSettings ogs = new OverrideGraphicSettings();
                     ogs = view.GetElementOverrides(filter.Id);
-                    ogs.SetSurfaceForegroundPatternColor(filter.Color);
+                    //ogs.SetSurfaceForegroundPatternColor(filter.Color);
                     view.SetElementOverrides(filter.Id, ogs);
                 }
             });
@@ -236,7 +236,7 @@ namespace IronMan.Revit.Services
             {
                 OverrideGraphicSettings ogs = new OverrideGraphicSettings();
                 ogs = view.GetElementOverrides(filter.Id);
-                ogs.SetSurfaceForegroundPatternColor(color);
+                //ogs.SetSurfaceForegroundPatternColor(color);
                 view.SetElementOverrides(filter.Id, ogs);
             });
         }
@@ -251,8 +251,8 @@ namespace IronMan.Revit.Services
             //修改图元的填充图案与颜色并应用于当前视图
             OverrideGraphicSettings ogs = new OverrideGraphicSettings();
             ogs = doc.ActiveView.GetElementOverrides(elementId);
-            ogs.SetSurfaceForegroundPatternColor(red);
-            ogs.SetSurfaceForegroundPatternId(fillPatternElement.Id);
+            //ogs.SetSurfaceForegroundPatternColor(red);
+            //ogs.SetSurfaceForegroundPatternId(fillPatternElement.Id);
             doc.ActiveView.SetElementOverrides(elementId, ogs);
         }
     }

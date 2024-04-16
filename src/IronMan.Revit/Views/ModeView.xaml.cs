@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using IronMan.Revit.Toolkit.Mvvm.IOC;
+﻿using IronMan.Revit.Toolkit.Mvvm.IOC;
 using IronMan.Revit.Utils;
 using System;
 using System.Collections.Generic;
@@ -45,7 +44,6 @@ namespace IronMan.Revit.Views
             //        //MessageBox.Show("View catch F1");
             //        keybd_event(F2, 0, KEYEVENTF_KEYDOWN, 0);
             //    }
-
             //};
             keybd_event(F2, 0, KEYEVENTF_KEYDOWN, 0);
         }

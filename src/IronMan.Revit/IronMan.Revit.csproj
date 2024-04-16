@@ -4,15 +4,15 @@
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<PlatformTarget>x64</PlatformTarget>
-		<Configurations>Debug;Release;RVT_2019;RVT_2022;RVT_2020;RVT_2021;Debug20;Debug19</Configurations>
+		<Configurations>Debug;Release;RVT_2019;RVT_2022;RVT_2020;RVT_2021;Debug20;Debug19;Debug23;Debug18</Configurations>
 		<LangVersion>10</LangVersion>
 		<XamlDebuggingInformation>True</XamlDebuggingInformation>
 	</PropertyGroup>
 	<!--多版本多框架配置-->
-	<PropertyGroup Condition="'$(Configuration)'=='Debug20'">
+	<PropertyGroup Condition="'$(Configuration)'=='Debug18'">
 		<StartAction>Program</StartAction>
-		<RevitVersion>2020</RevitVersion>
-		<StartProgram>D:\Revit2020\Revit 2020\Revit.exe</StartProgram>
+		<RevitVersion>2018</RevitVersion>
+		<StartProgram>C:\Program Files\Autodesk\Revit 2018\Revit.exe</StartProgram>
 		<TargetFramework>net472</TargetFramework>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Debug19'">
@@ -21,33 +21,19 @@
 		<StartProgram>D:\Revit2019\Revit 2019\Revit.exe</StartProgram>
 		<TargetFramework>net472</TargetFramework>
 	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)'=='RVT_2019'">
-		<!--启动外部程序-->
-		<StartAction>Program</StartAction>
-		<RevitVersion>2019</RevitVersion>
-		<StartProgram>D:\Revit2019\Revit 2019\Revit.exe</StartProgram>
-		<TargetFramework>net472</TargetFramework>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)'=='RVT_2020'">
+	<PropertyGroup Condition="'$(Configuration)'=='Debug20'">
 		<StartAction>Program</StartAction>
 		<RevitVersion>2020</RevitVersion>
-		<StartProgram>D:\Revit2020\Revit 2020\Revit.exe</StartProgram>
+		<StartProgram>C:\Program Files\Autodesk\Revit 2020\Revit.exe</StartProgram>
 		<TargetFramework>net472</TargetFramework>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)'=='RVT_2021'">
-		<StartAction>Program</StartAction>
-		<RevitVersion>2021</RevitVersion>
-		<StartProgram>D:\Revit2021\Revit 2021\Revit.exe</StartProgram>
-		<TargetFramework>net48</TargetFramework>
+	<PropertyGroup Condition="'$(Configuration)'=='Debug23'">
+	  <StartAction>Program</StartAction>
+	  <RevitVersion>2023</RevitVersion>
+	  <StartProgram>C:\Program Files\Autodesk\Revit 2023\Revit.exe</StartProgram>
+	  <TargetFramework>net48</TargetFramework>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)'=='RVT_2022'">
-		<StartAction>Program</StartAction>
-		<RevitVersion>2022</RevitVersion>
-		<StartProgram>D:\Revit2022\Revit 2022\Revit.exe</StartProgram>
-		<TargetFramework>net48</TargetFramework>
-	</PropertyGroup>
-
+	
 	<!--复制addin及dll到Revit20**-->
 	<Target Name="CopyAddin" BeforeTargets="PostBuildEvent">
 		<!--定义文件集合-->
@@ -64,8 +50,16 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug20|AnyCPU'">
 		<Optimize>False</Optimize>
 	</PropertyGroup>
+
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug23|AnyCPU'">
+	  <Optimize>False</Optimize>
+	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug19|AnyCPU'">
 		<Optimize>False</Optimize>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug18|AnyCPU'">
+	  <Optimize>False</Optimize>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2019|AnyCPU'">
 		<Optimize>True</Optimize>
@@ -80,6 +74,12 @@
 		<Optimize>True</Optimize>
 	</PropertyGroup>
 
+	
+	
+	
+	
+	
+	
 	<ItemGroup>
 		<Compile Remove="Interfaces\IDataContext.cs" />
 		<Compile Remove="Services\IDlingEventService.cs" />
@@ -87,10 +87,12 @@
 
 	<ItemGroup>
 	  <PackageReference Include="HandyControl" Version="3.4.0" />
+	  <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
+	  <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\IronMan.Revit.Entity\IronMan.Revit.Entity.csproj" />
+	  <ProjectReference Include="..\IronMan.Revit.Entity\IronMan.Revit.Entity.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
