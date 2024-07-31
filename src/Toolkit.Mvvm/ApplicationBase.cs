@@ -1,9 +1,8 @@
 ﻿using Autodesk.Revit.UI;
-using CommonServiceLocator;
-using GalaSoft.MvvmLight.Ioc;
 using IronMan.Revit.Toolkit.Mvvm.Interfaces;
 using IronMan.Revit.Toolkit.Mvvm.IOC;
 using IronMan.Revit.Toolkit.Mvvm.Service.ExtensibleService;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,51 +15,56 @@ namespace IronMan.Revit.Toolkit.Mvvm
 {
     public abstract class ApplicationBase : IExternalApplication
     {
-        public abstract void RegisterTyped(SimpleIoc container);
+        public abstract void RegisterTyped(IServiceCollection container);
 
         public abstract void RegisterSchema(IDataStorage dataStorage);
 
-        public virtual void RegisterField(SimpleIoc container) { }
+        public static IServiceProvider Provider { get; private set; }
 
-        public static SimpleIoc Current = SingletonIOC.Current.Container;
-
+        internal static Dictionary<string, IServiceProvider> Providers { get; private set; }
         public Result OnShutdown(UIControlledApplication application)
         {
-            var events = ServiceLocator.Current.GetInstance<IEventManager>();
+            var events = Provider.GetRequiredService<IEventManager>();
             events?.Unsubscribe();
             return Result.Succeeded;
         }
 
+
         public Result OnStartup(UIControlledApplication application)
         {
-            if (!ServiceLocator.IsLocationProviderSet)
+            var services = new ServiceCollection()
+                .AddSingleton(application)
+                .AddSingleton<IUIProvider, UIProvider>()
+                .AddSingleton<IDataContext, DataContext>()
+                .AddSingleton<IDataStorage, DataStorage>();
+            RegisterTyped(services);
+
+            //RegisterSchema(SingletonIOC.Current.Container.GetInstance<IDataStorage>());
+            if (Providers.TryGetValue("IronMan",out var outProvider))
             {
-                ServiceLocator.SetLocatorProvider(() => SingletonIOC.Current.Container);
+                if (outProvider == null)
+                {
+                    var provider = services.BuildServiceProvider();
+                    Providers.Add("IronMan", provider);
+                    Provider = provider;
+                }
+                else
+                {
+                    Provider = outProvider;
+                }
             }
-            //必需的注入//通过接口和细节注入//通过实例注入
-            SingletonIOC.Current.Container.Register<UIControlledApplication>(() => application);
-            SingletonIOC.Current.Container.Register<IUIProvider, UIProvider>();
-            SingletonIOC.Current.Container.Register<IDataContext, DataContext>();
-            SingletonIOC.Current.Container.Register<IDataStorage, DataStorage>();
-
-            //注入应用信息
-            IApplicationData applicationData = GetApplicationData();
-            SingletonIOC.Current.Container.Register<IApplicationData>(() => applicationData);
-
-            //自定义服务注入
-            RegisterTyped(SingletonIOC.Current.Container);
-            RegisterSchema(SingletonIOC.Current.Container.GetInstance<IDataStorage>());
-            RegisterField(SingletonIOC.Current.Container);
 
             //IOC中订阅事件
-            var events = SingletonIOC.Current.Container.GetInstance<IEventManager>();
+            var events = Provider.GetService<IEventManager>();
             events?.Subscribe();
 
             //IOC中获取RibbonUI
-            var appUI = SingletonIOC.Current.Container.GetInstance<IApplicationUI>();
+            var appUI = Provider.GetService<IApplicationUI>();
             return appUI == null ? Result.Cancelled : appUI.Initial();
 
         }
+
+
 
         private IApplicationData GetApplicationData()
         {

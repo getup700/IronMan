@@ -1,6 +1,5 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using GalaSoft.MvvmLight.Ioc;
 using IronMan.Revit.Toolkit.Mvvm.Interfaces;
 using IronMan.Revit.Toolkit.Mvvm.IOC;
 using System;

@@ -39,7 +39,8 @@ namespace IronMan.Revit.Toolkit.Mvvm
 
         public IntPtr GetWindowHandle()
         {
-            return  GetUIApplication().MainWindowHandle;
+            //return  GetUIApplication().MainWindowHandle;
+            return IntPtr.Zero;
         }
     }
 }

@@ -1,16 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
-
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<PlatformTarget>x64</PlatformTarget>
 		<Authors>SuperMan</Authors>
-
-		<!--启动外部程序-->
 		<StartAction>Program</StartAction>
-		<StartProgram>D:\Revit2019\Revit 2019\Revit.exe</StartProgram>
-		<Configurations>Debug;Release;RVT_2019;RVT_2022;RVT_2020;RVT_2021;Debug20;Debug19</Configurations>
+		<Configurations>Debug;Release;RVT_2019;RVT_2022;RVT_2020;RVT_2021;Debug20;Debug19;Debug23;Debug18</Configurations>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='RVT_2019'">
 		<TargetFramework>net472</TargetFramework>
@@ -21,8 +16,14 @@
 	<PropertyGroup Condition="'$(Configuration)'=='Debug20'">
 		<TargetFramework>net472</TargetFramework>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Debug23'">
+		<TargetFramework>net48</TargetFramework>
+	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Debug19'">
-	  <TargetFramework>net472</TargetFramework>
+		<TargetFramework>net472</TargetFramework>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Debug18'">
+		<TargetFramework>net472</TargetFramework>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='RVT_2021'">
 		<TargetFramework>net48</TargetFramework>
@@ -31,40 +32,66 @@
 		<TargetFramework>net48</TargetFramework>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2019|AnyCPU'">
-	  <Optimize>True</Optimize>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2022|AnyCPU'">
-	  <Optimize>True</Optimize>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2020|AnyCPU'">
-	  <Optimize>True</Optimize>
-	</PropertyGroup>
-	
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug20|AnyCPU'">
-	  <Optimize>False</Optimize>
-	</PropertyGroup>
-	
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug19|AnyCPU'">
-	  <Optimize>False</Optimize>
+		<Optimize>False</Optimize>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug18|AnyCPU'">
+		<Optimize>False</Optimize>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug20|AnyCPU'">
+		<Optimize>False</Optimize>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug23|AnyCPU'">
+		<Optimize>False</Optimize>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2019|AnyCPU'">
+		<Optimize>True</Optimize>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2020|AnyCPU'">
+		<Optimize>True</Optimize>
+	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2021|AnyCPU'">
-	  <Optimize>True</Optimize>
+		<Optimize>True</Optimize>
 	</PropertyGroup>
-
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2022|AnyCPU'">
+		<Optimize>True</Optimize>
+	</PropertyGroup>
 	<ItemGroup>
-	  <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Toolkit.Extension\IronMan.Revit.Toolkit.Extension.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="Microsoft.Build.Framework" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\Toolkit.Extension\IronMan.Revit.Toolkit.Extension.csproj" />
-	</ItemGroup>
 
-	<ItemGroup>
-	  <Reference Include="Microsoft.Build.Framework" />
-	</ItemGroup>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </Project>

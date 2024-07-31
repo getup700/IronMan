@@ -16,7 +16,7 @@ namespace IronMan.Revit.Toolkit.Extension
         /// <returns></returns>
         public static double ConvertToFeet(this double value)
         {
-#if (RVT_2019 || RVT_2020||DEBUG20||DEBUG19 )
+#if (RVT_2019 || RVT_2020||DEBUG20||DEBUG19||DEBUG18 )
             return UnitUtils.Convert(value, DisplayUnitType.DUT_MILLIMETERS, DisplayUnitType.DUT_DECIMAL_FEET);
 #endif
 
@@ -36,7 +36,7 @@ namespace IronMan.Revit.Toolkit.Extension
         /// <returns></returns>
         public static double ConvertToMilliMeters(this double value)
         {
-#if (RVT_2019 || RVT_2020 || DEBUG20||DEBUG19)
+#if (RVT_2019 || RVT_2020 || DEBUG20||DEBUG19||DEBUG18)
             return UnitUtils.Convert(value, DisplayUnitType.DUT_DECIMAL_FEET, DisplayUnitType.DUT_MILLIMETERS);
 #endif
 #if RVT_2021

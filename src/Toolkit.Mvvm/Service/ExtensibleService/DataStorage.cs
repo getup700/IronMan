@@ -68,7 +68,7 @@ namespace IronMan.Revit.Toolkit.Mvvm.Service.ExtensibleService
                 foreach (PropertyInfo property in properties)
                 {
                     ExtensibleMemberAttribute propertyAttribute = property.GetCustomAttribute<ExtensibleMemberAttribute>();
-                    if (propertyAttribute == null) continue;
+                    if (propertyAttribute == null)  continue;
                     Type propertyType = property.PropertyType;
                     if (SchemaStaticResources.IsAllowedType(propertyType))
                     {

@@ -1,8 +1,8 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using GalaSoft.MvvmLight.Ioc;
 using IronMan.Revit.Toolkit.Mvvm;
 using IronMan.Revit.Toolkit.Mvvm.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,22 +27,22 @@ namespace IronMan.Revit.Toolkit.Mvvm.Extension
         /// <param name="container"></param>
         /// <param name="modeless">非模态的可选参数，true为非模态窗口，false为模态窗口</param>
         /// <returns></returns>
-        public static TView Resolve<TView, TViewModel>(this SimpleIoc container, bool modeless = false) where TView : Window where TViewModel : class
+        public static TView Resolve<TView, TViewModel>(this IServiceProvider container, bool modeless = false) where TView : Window where TViewModel : class
         {
-            container.Register<TView, TViewModel>();
-            UIApplication uiApplication = container.GetInstance<IDataContext>().GetUIApplication();
+            //container.Register<TView, TViewModel>();
+            UIApplication uiApplication = container.GetRequiredService<IDataContext>().GetUIApplication();
             //单例窗口or瞬时窗口
             //模态窗口为什么用瞬时IOC
             //瞬时ioc不会存储在内存中，相当于每次都是新的实例
             //请求窗口要求是瞬时
-            var view = modeless ? container.GetInstance<TView>() : container.GetInstanceWithoutCaching<TView>();//非模态单例or模态瞬时
+            var view = modeless ? container.GetService<TView>() : container.GetService<TView>();//非模态单例or模态瞬时
             //window start location
             //view.Topmost = true;
             if (modeless)
             {
                 new WindowInteropHelper(view)
                 {
-                    Owner = uiApplication.MainWindowHandle
+                    //Owner = uiApplication.MainWindowHandle
                 };
 
                 //IntPtr revitWindow = Process.GetCurrentProcess().MainWindowHandle;
@@ -63,7 +63,8 @@ namespace IronMan.Revit.Toolkit.Mvvm.Extension
             {
                 view.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
-            view.DataContext = container.GetInstanceWithoutCaching<TViewModel>();//瞬时
+            //view.DataContext = container.GetInstance<TViewModel>();//瞬时
+            view.DataContext = container.GetService<TViewModel>();//瞬时
             view.KeyDown += (o, e) =>
             {
                 if ((!modeless) && e.Key == System.Windows.Input.Key.Escape)
@@ -78,17 +79,17 @@ namespace IronMan.Revit.Toolkit.Mvvm.Extension
             return view;
         }
 
-        public static SimpleIoc Register<TView, TViewModel>(this SimpleIoc container) where TView : FrameworkElement where TViewModel : class
-        {
-            if (container.IsRegistered<TView>() == false)
-            {
-                container.Register<TView>();
-            }
-            if (container.IsRegistered<TViewModel>() == false)
-            {
-                container.Register<TViewModel>();
-            }
-            return container;
-        }
+        //public static SimpleIoc Register<TView, TViewModel>(this SimpleIoc container) where TView : FrameworkElement where TViewModel : class
+        //{
+        //    if (container.IsRegistered<TView>() == false)
+        //    {
+        //        container.Register<TView>();
+        //    }
+        //    if (container.IsRegistered<TViewModel>() == false)
+        //    {
+        //        container.Register<TViewModel>();
+        //    }
+        //    return container;
+        //}
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Autodesk.Revit.DB;
-using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,21 +26,21 @@ namespace IronMan.Revit.Entity
         public int LayerCount
         {
             get { return _layerCount; }
-            set { Set(ref _layerCount, value); }
+            set { SetProperty(ref _layerCount, value); }
         }
 
 
         public ObservableCollection<CompoundStructureLayer> Layers
         {
             get { return _layers; }
-            set { Set(ref _layers, value); }
+            set { SetProperty(ref _layers, value); }
         }
 
 
         public FloorType FloorType
         {
             get { return _floorType; }
-            set { Set(ref _floorType, value); }
+            set { SetProperty(ref _floorType, value); }
         }
 
 

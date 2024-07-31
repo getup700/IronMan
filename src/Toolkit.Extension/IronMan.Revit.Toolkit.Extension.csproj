@@ -2,14 +2,20 @@
 
 	<PropertyGroup>
 		<PlatformTarget>x64</PlatformTarget>
-		<Configurations>Debug;Release;RVT_2019;RVT_2022;RVT_2020;RVT_2021;Debug20;Debug19</Configurations>
+		<Configurations>Debug;Release;RVT_2019;RVT_2022;RVT_2020;RVT_2021;Debug20;Debug19;Debug23;Debug18</Configurations>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)'=='Debug18'">
+		<TargetFramework>net472</TargetFramework>
+	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Debug19'">
 		<TargetFramework>net472</TargetFramework>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Debug20'">
 		<TargetFramework>net472</TargetFramework>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Debug23'">
+	  <TargetFramework>net48</TargetFramework>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='RVT_2019'">
 		<TargetFramework>net472</TargetFramework>
@@ -33,8 +39,14 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug20|AnyCPU'">
 		<Optimize>False</Optimize>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug23|AnyCPU'">
+	  <Optimize>False</Optimize>
+	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug19|AnyCPU'">
 		<Optimize>False</Optimize>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug18|AnyCPU'">
+	  <Optimize>False</Optimize>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RVT_2020|AnyCPU'">
 		<Optimize>True</Optimize>
@@ -45,8 +57,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="NPOI" Version="2.6.0" />
+		<PackageReference Include="Revit_API_x64" Version="2018.0.0" Condition="'$(Configuration)'=='Debug18'" />
 		<PackageReference Include="Revit_API_x64" Version="2019.0.0" Condition="'$(Configuration)'=='Debug19'" />
 		<PackageReference Include="Revit_API_x64" Version="2020.0.0" Condition="'$(Configuration)'=='Debug20'" />
+		<PackageReference Include="Revit_API_x64" Version="2023.0.1" Condition="'$(Configuration)'=='Debug23'" />
+
 		<PackageReference Include="Revit_API_x64" Version="2019.0.0" Condition="'$(Configuration)'=='RVT_2019'" />
 		<PackageReference Include="Revit_API_x64" Version="2020.0.0" Condition="'$(Configuration)'=='RVT_2020'" />
 		<PackageReference Include="Revit_API_x64" Version="2021.0.0" Condition="'$(Configuration)'=='RVT_2021'" />

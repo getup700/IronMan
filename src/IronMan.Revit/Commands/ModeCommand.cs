@@ -29,12 +29,14 @@ namespace IronMan.Revit.Commands.Test
 
         public override Result Execute(ref string message, ElementSet elements)
         {
-            TransactionStatus status = DataContext.GetDocument().NewTransactionGroup("模态窗口", () =>
-            {
-                MainWindow.Show();
-                return true;
-            });
-            return status == TransactionStatus.Committed ? Result.Succeeded : Result.Cancelled;
+            //TransactionStatus status = DataContext.GetDocument().NewTransactionGroup("模态窗口", () =>
+            //{
+            //    MainWindow.Show();
+            //    return true;
+            //});
+            //return status == TransactionStatus.Committed ? Result.Succeeded : Result.Cancelled;
+            MainWindow.Show();
+            return Result.Succeeded;
         }
     }
 }

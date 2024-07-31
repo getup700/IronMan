@@ -16,8 +16,8 @@ namespace IronMan.Revit.Toolkit.Mvvm.Service.ExtensibleService
             FieldBuilder fieldBuilder = schemaBuilder.AddSimpleField(info.Name, info.Type);
             if (fieldBuilder.Ready())
             {
-                fieldBuilder.ConfigureUnitType(info.UnitType)
-                    .ConfigureDocumetation(info.Documetation);
+                //fieldBuilder.ConfigureUnitType(info.UnitType)
+                //    .ConfigureDocumetation(info.Documetation);
             }
         }
 
@@ -26,9 +26,9 @@ namespace IronMan.Revit.Toolkit.Mvvm.Service.ExtensibleService
             FieldBuilder fieldBuilder = schemaBuilder.AddSimpleField(info.Name, info.Type);
             if (fieldBuilder.Ready())
             {
-                fieldBuilder.ConfigureUnitType(info.UnitType)
-                    .ConfigureDocumetation(info.Documetation)
-                    .SetSubSchemaGUID(info.SubschemaUniqueId);
+                //fieldBuilder.ConfigureUnitType(info.UnitType)
+                //    .ConfigureDocumetation(info.Documetation)
+                //    .SetSubSchemaGUID(info.SubschemaUniqueId);
             }
         }
 
@@ -37,8 +37,8 @@ namespace IronMan.Revit.Toolkit.Mvvm.Service.ExtensibleService
             FieldBuilder fieldBuilder = schemaBuilder.AddArrayField(info.Name, info.Type.GenericTypeArguments.FirstOrDefault());
             if (fieldBuilder.Ready())
             {
-                fieldBuilder.ConfigureUnitType(info.UnitType)
-                    .ConfigureDocumetation(info.Documetation);
+                //fieldBuilder.ConfigureUnitType(info.UnitType)
+                //    .ConfigureDocumetation(info.Documetation);
             }
         }
 
@@ -47,8 +47,8 @@ namespace IronMan.Revit.Toolkit.Mvvm.Service.ExtensibleService
             FieldBuilder fieldBuilder = schemaBuilder.AddMapField(info.Name, info.Type.GenericTypeArguments[0], info.Type.GenericTypeArguments[1]);
             if (fieldBuilder.Ready())
             {
-                fieldBuilder.ConfigureUnitType(info.UnitType)
-                    .ConfigureDocumetation(info.Documetation);
+                //fieldBuilder.ConfigureUnitType(info.UnitType)
+                //    .ConfigureDocumetation(info.Documetation);
             }
         }
 

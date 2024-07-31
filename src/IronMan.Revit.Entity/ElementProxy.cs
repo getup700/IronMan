@@ -1,5 +1,5 @@
 ﻿using Autodesk.Revit.DB;
-using GalaSoft.MvvmLight;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +23,6 @@ namespace IronMan.Revit.Entity
 
         }
 
-        protected virtual void SetProperty(Action action, [CallerMemberName] string propertyName = null)
-        {
-            action();
-            this.RaisePropertyChanged(propertyName);
-        }
-
         public Document Document => this._element?.Document;
 
         //public ElementId Id => (((this._element != null) && (this._element.Id)) ?? ElementId.InvalidElementId);
@@ -47,7 +41,7 @@ namespace IronMan.Revit.Entity
         public string Name
         {
             get { return _name; }
-            set { Set(ref _name, value); }
+            set { SetProperty(ref _name, value); }
         }
 
 

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "IronMan.Revit": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
