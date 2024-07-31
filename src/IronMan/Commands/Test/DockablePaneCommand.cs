@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace IronMan.Revit.Commands
+namespace IronMan.Revit.Commands.Test
 {
     [Transaction(TransactionMode.Manual)]
     [Journaling(JournalingMode.NoCommandData)]
@@ -26,7 +26,10 @@ namespace IronMan.Revit.Commands
         {
             DockablePaneId id = DockablePaneProvider.Id;
 
-            if (!DockablePane.PaneExists(id)) return Result.Cancelled;
+            if (!DockablePane.PaneExists(id))
+            {
+                return Result.Cancelled;
+            }
 
             DockablePane pane = commandData.Application.GetDockablePane(id);
             if (pane.IsShown())

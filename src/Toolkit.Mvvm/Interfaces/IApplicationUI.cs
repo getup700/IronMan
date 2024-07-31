@@ -16,9 +16,7 @@ namespace IronMan.Revit.Toolkit.Mvvm.Interfaces
         /// 注册基本的Ribbon
         /// </summary>
         /// <returns></returns>
-        Result Initial();
-
-        Result CreatePanel();
+        void Initial();
 
         void CreateTab();
 

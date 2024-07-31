@@ -15,7 +15,7 @@ using System.Windows;
 using IronMan.Revit.Toolkit.Extension;
 using Autodesk.Revit.DB.Mechanical;
 
-namespace IronMan.Revit.Commands
+namespace IronMan.Revit.Commands.Test
 {
     [Transaction(TransactionMode.Manual)]
     [Journaling(JournalingMode.NoCommandData)]

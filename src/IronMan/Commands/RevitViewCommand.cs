@@ -25,7 +25,7 @@ using System.Windows;
 
 namespace IronMan.Revit.Commands
 {
-    internal class RevitViewCommand : CommandBase
+    internal class RevitViewCommand : Toolkit.Mvvm.CommandBase
     {
         public override Window CreateMainWindow()
         {

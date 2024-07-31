@@ -18,7 +18,7 @@ using UIFramework;
 
 namespace IronMan.Revit.Toolkit.Mvvm
 {
-    public abstract class CommandBase : IExternalCommand, IExternalCommandAvailability
+    public abstract class CommandBase : Autodesk.Revit.UI.IExternalCommand, IExternalCommandAvailability
     {
         private bool _abailable = true;
         //自定义服务注入

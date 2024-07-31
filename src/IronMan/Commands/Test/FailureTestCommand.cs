@@ -10,12 +10,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace IronMan.Revit.Commands
+namespace IronMan.Revit.Commands.Test
 {
     [Transaction(TransactionMode.Manual)]
     [Journaling(JournalingMode.NoCommandData)]
     [Regeneration(RegenerationOption.Manual)]
-    public class FailureTestCommand : CommandBase
+    public class FailureTestCommand : Toolkit.Mvvm.CommandBase
     {
         public override Window CreateMainWindow()
         {
@@ -28,10 +28,10 @@ namespace IronMan.Revit.Commands
             document.NewTransaction(() =>
             {
                 var familys = document.GetElements<Family>(x => x.Category.Name == "柱");
-                FamilySymbol familySymbol =familys .FirstOrDefault().GetFamilySymbolIds() as FamilySymbol;
-                if (familySymbol==null)
+                FamilySymbol familySymbol = familys.FirstOrDefault().GetFamilySymbolIds() as FamilySymbol;
+                if (familySymbol == null)
                 {
-                    return; 
+                    return;
                 }
                 if (!familySymbol.IsActive)
                 {

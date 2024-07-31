@@ -50,7 +50,6 @@ namespace IronMan.Revit.DockablePanes
             //data.FrameworkElement = null;
             //关联帮助
             data.ContextualHelp = null;
-
         }
     }
 }

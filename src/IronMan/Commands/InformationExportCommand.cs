@@ -17,7 +17,7 @@ namespace IronMan.Revit.Commands
     [Transaction(TransactionMode.Manual)]
     [Journaling(JournalingMode.NoCommandData)]
     [Regeneration(RegenerationOption.Manual)]
-    public class InformationExportCommand : CommandBase
+    public class InformationExportCommand : Toolkit.Mvvm.CommandBase
     {
         public override Window CreateMainWindow()
         {

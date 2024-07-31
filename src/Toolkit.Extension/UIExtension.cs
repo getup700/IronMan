@@ -15,7 +15,7 @@ namespace IronMan.Revit.Toolkit.Extension
     public static class UIExtension
     {
         /// <summary>
-        /// 创建按钮
+        /// 创建普通按钮
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="panel"></param>
@@ -41,7 +41,7 @@ namespace IronMan.Revit.Toolkit.Extension
 
 
         /// <summary>
-        /// 创建堆叠按钮
+        /// 创建竖向紧凑布置的堆叠按钮
         /// </summary>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
@@ -72,6 +72,13 @@ namespace IronMan.Revit.Toolkit.Extension
             panel.AddStackedItems(pushButtonData1, pushButtonData2, pushButtonData3);
             return panel;
         }
+
+        /// <summary>
+        /// 创建普通按钮
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public static PushButtonData CreatePushButtonData<T>(Action<PushButtonData> action)
         {
             Type type = typeof(T);
@@ -86,14 +93,16 @@ namespace IronMan.Revit.Toolkit.Extension
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="panel"></param>
-        /// <param name="function">construct a pullDownButtonData</param>
+        /// <param name="action">construct a pullDownButtonData</param>
         /// <returns></returns>
-        public static PulldownButton CreatePulldownButton(this RibbonPanel panel, Func<PulldownButtonData> function)
+        public static PulldownButton CreatePulldownButton(this RibbonPanel panel, Action<PulldownButtonData> action)
         {
+            var data = new PulldownButtonData("default","default");
             //Type type = typeof(T);
             //string name = "pullDownBtn_" + type.Name;
-            PulldownButtonData data = function.Invoke();
-            PulldownButton pulldownButton = panel.AddItem(data) as PulldownButton;
+            action.Invoke(data);
+            var pulldownButton = panel.AddItem(data) as PulldownButton;
+            
             //foreach (var pushButtonData in pushButtonDatas)
             //{
             //    pulldownButton.AddPushButton(pushButtonData);
@@ -108,10 +117,12 @@ namespace IronMan.Revit.Toolkit.Extension
         /// <param name="panel"></param>
         /// <param name="function"></param>
         /// <returns></returns>
-        public static SplitButton CreateSplitButton<T>(this RibbonPanel panel, Func<SplitButtonData> function) where T : IExternalCommand
+        public static SplitButton CreateSplitButton<T>(this RibbonPanel panel, Action<SplitButtonData> action) where T : IExternalCommand
         {
-            SplitButtonData splitButtonData = function.Invoke();
-            SplitButton splitButton = panel.AddItem(splitButtonData) as SplitButton;
+            var data = new SplitButtonData("default", "default");
+            action.Invoke(data);
+
+            SplitButton splitButton = panel.AddItem(data) as SplitButton;
             return splitButton;
         }
 
@@ -150,13 +161,12 @@ namespace IronMan.Revit.Toolkit.Extension
             return radioButtonGroup;
         }
 
-        public static RadioButtonGroup AddToggleButtonData<T>(this RadioButtonGroup radioButtonGroup, Func<ToggleButtonData> func) where T : IExternalCommand
+        public static RadioButtonGroup AddToggleButtonData<T>(this RadioButtonGroup radioButtonGroup, Action<ToggleButtonData> action) where T : IExternalCommand
         {
             Type type = typeof(T);
-            string uniqueName = "RadioButton" + type.Name;
-            ToggleButtonData toggleButtonData = new ToggleButtonData(uniqueName, "DefaultName", type.Assembly.Location, type.FullName);
-            toggleButtonData = func.Invoke();
-            var result = radioButtonGroup.AddItem(toggleButtonData);
+            var data = new ToggleButtonData("default", "DefaultName", type.Assembly.Location, type.FullName);
+            action.Invoke(data);
+            var result = radioButtonGroup.AddItem(data);
             return radioButtonGroup;
         }
 

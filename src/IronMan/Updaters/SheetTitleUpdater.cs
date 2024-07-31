@@ -1,5 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 using IronMan.Revit.IServices;
+using IronMan.Revit.Toolkit.Extension;
 using IronMan.Revit.Toolkit.Mvvm.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,13 @@ namespace IronMan.Revit.Updaters
     {
         private IUIProvider _uiProvider;
         private ISheetTitleServicve _sheetTitleServicveProvider;
+        private readonly IDataContext _dataContext;
 
-        public SheetTitleUpdater(IUIProvider uiProvider,ISheetTitleServicve sheetTitleServicveProvider)
+        public SheetTitleUpdater(IUIProvider uiProvider, ISheetTitleServicve sheetTitleServicveProvider, IDataContext dataContext)
         {
-            _uiProvider= uiProvider;
+            _uiProvider = uiProvider;
             _sheetTitleServicveProvider = sheetTitleServicveProvider;
+            _dataContext = dataContext;
         }
 
         public void Execute(UpdaterData data)
@@ -74,6 +77,16 @@ namespace IronMan.Revit.Updaters
         public void Register()
         {
             UpdaterRegistry.RegisterUpdater(this);
+
+            ChangeType changeType = null;
+            var instance = _dataContext.GetDocument().GetElements<FamilyInstance>().First();
+            var parameters = instance.GetOrderedParameters();
+            foreach (var item in parameters)
+            {
+                var itemChangeType = Element.GetChangeTypeParameter(item);
+                changeType = ChangeType.ConcatenateChangeTypes(changeType, itemChangeType);
+            }
+
             UpdaterRegistry.AddTrigger(this.GetUpdaterId(), new ElementClassFilter(typeof(Viewport)), Element.GetChangeTypeElementAddition());
             UpdaterRegistry.AddTrigger(this.GetUpdaterId(), new ElementClassFilter(typeof(Viewport)), Element.GetChangeTypeElementDeletion());
             UpdaterRegistry.AddTrigger(this.GetUpdaterId(), new ElementClassFilter(typeof(Viewport)), Element.GetChangeTypeAny());

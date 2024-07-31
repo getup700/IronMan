@@ -24,7 +24,7 @@ namespace IronMan.Revit.Commands
     [Transaction(TransactionMode.Manual)]
     [Journaling(JournalingMode.NoCommandData)]
     [Regeneration(RegenerationOption.Manual)]
-    public class ParameterFilterCommand : CommandBase
+    public class ParameterFilterCommand : Toolkit.Mvvm.CommandBase
     {
         public override Window CreateMainWindow()
         {

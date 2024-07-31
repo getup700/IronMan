@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IronMan.Revit.Commands
+namespace IronMan.Revit.Commands.Test
 {
     [Transaction(TransactionMode.Manual)]
     [Journaling(JournalingMode.NoCommandData)]
@@ -25,7 +25,7 @@ namespace IronMan.Revit.Commands
             Application docApplication = document.Application;
 
             var updaterInfos = UpdaterRegistry.GetRegisteredUpdaterInfos();
-            
+
 
             return Result.Succeeded;
         }

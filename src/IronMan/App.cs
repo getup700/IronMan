@@ -109,7 +109,6 @@ namespace IronMan.Revit
             string handyControlPath = Path.Combine(myPath, "HandyControl.dll");
             Assembly.LoadFrom(handyControlPath);
 
-            container.Register<ThreadHook>(() => new ThreadHook());
         }
         public sealed override void RegisterSchema(IDataStorage dataStorage)
         {

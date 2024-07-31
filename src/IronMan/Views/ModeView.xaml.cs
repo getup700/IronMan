@@ -23,7 +23,7 @@ namespace IronMan.Revit.Views
     /// </summary>
     public partial class ModeView : Window
     {
-        private ThreadHook _hook;
+        private ThreadHook1 _hook;
         [DllImport("user32.dll")]
         public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
         private const byte F1 = 0x70;

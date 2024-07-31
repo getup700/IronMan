@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace IronMan.Revit.Commands
+namespace IronMan.Revit.Commands.Test
 {
-    public class SheetTitleUpdaterSwitchCommand : CommandBase
+    public class SheetTitleUpdaterSwitchCommand : Toolkit.Mvvm.CommandBase
     {
         public override Window CreateMainWindow()
         {
@@ -25,7 +25,7 @@ namespace IronMan.Revit.Commands
             if (UpdaterRegistry.IsUpdaterRegistered(updater.GetUpdaterId()))
             {
                 UpdaterRegistry.DisableUpdater(updater.GetUpdaterId());
-                TaskDialog.Show("IronMan",$"{nameof(SheetTitleUpdater)}已停用");
+                TaskDialog.Show("IronMan", $"{nameof(SheetTitleUpdater)}已停用");
             }
             else
             {

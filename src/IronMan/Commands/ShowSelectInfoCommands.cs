@@ -28,7 +28,7 @@ namespace IronMan.Revit.Commands
     [Transaction(TransactionMode.Manual)]
     [Journaling(JournalingMode.NoCommandData)]
     [Regeneration(RegenerationOption.Manual)]
-    internal class ShowSelectInfoCommands : CommandBase
+    internal class ShowSelectInfoCommands : Toolkit.Mvvm.CommandBase
     {
         public override Window CreateMainWindow()
         {

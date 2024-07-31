@@ -11,6 +11,9 @@ using IronMan.Revit.Commands.PushButtons;
 using IronMan.Revit.Entity;
 using IronMan.Revit.Availabilities;
 using UIFramework;
+using IronMan.Revit.Commands.Test;
+using IronMan.Revit.Commands.Test.ExtensibleStorage;
+using IronMan.Revit.Commands.Test.Cad2Revit;
 
 namespace IronMan.Revit
 {
@@ -18,6 +21,11 @@ namespace IronMan.Revit
     {
         private readonly IUIProvider _uiProvider;
         private readonly string _tabName = "IronMan";
+        private readonly string _archiPanelName = "建筑";
+        private readonly string _mepPanelName = "机电";
+        private readonly string _globalPanelName = "全局";
+        private readonly string _cadPanelName = "CAD识别";
+        private readonly string _devPanelName = "Develop";
 
         public AppUI(IUIProvider uiProvider)
         {
@@ -26,10 +34,15 @@ namespace IronMan.Revit
 
         public List<RibbonPanel> RibbonPanels { get; set; }
 
-        public Result Initial()
+        public void Initial()
         {
             CreateTab();
-            return CreatePanel();
+
+            InitialArchiPanel();
+            InitialMepPanel();
+            InitialCadPanel();
+            InitialDevelopPanel();
+            InitialGlobalPanel();
         }
 
         public void CreateTab()
@@ -37,149 +50,99 @@ namespace IronMan.Revit
             _uiProvider.GetUIApplication().CreateRibbonTab(_tabName);
         }
 
-        public Result CreatePanel()
+        private void InitialArchiPanel()
         {
-            //RibbonPanel archiPanel = _uiProvider.GetUIApplication().CreateRibbonPanel(_tabName, "建筑");
-            RibbonPanel mepPanel = _uiProvider.GetUIApplication().CreateRibbonPanel(_tabName, "机电");
-            RibbonPanel globalPanel = _uiProvider.GetUIApplication().CreateRibbonPanel(_tabName, "全局");
-            RibbonPanel developPanel = _uiProvider.GetUIApplication().CreateRibbonPanel(_tabName, "Develop");
+            var panel = _uiProvider.GetUIApplication().CreateRibbonPanel(_tabName, _archiPanelName);
 
-            _uiProvider.GetUIApplication().AddPanel(_tabName, "建筑", (archiPanel) =>
+            panel.CreateButton<FloorTypeManageCommand>((b) =>
             {
-                archiPanel.CreateButton<ShowSelectInfoCommands>((b) =>
-                {
-                    b.Text = "属性窗口";
-                    b.LargeImage = Resources.Materials.ConvertToBitmapSource();
-                    b.ToolTip = "模态窗口、对话框";
-                });
-                archiPanel.CreateButton<MaterialsCommand>((b) =>
-                {
-                    b.Text = "材质管理";
-                    b.LargeImage = Resources.Materials.ConvertToBitmapSource();
-                    b.ToolTip = "模态窗口、对话框";
-                });
-                archiPanel.CreateButton<FloorTypeManageCommand>((b) =>
-                {
-                    b.Text = "楼板类型";
-                    b.LargeImage = Resources.Materials.ConvertToBitmapSource();
-                    b.ToolTip = "模态窗口";
-                });
+                b.Text = "楼板类型";
+                b.LargeImage = Resources.Materials.ConvertToBitmapSource();
+                b.ToolTip = "模态窗口";
             });
-            #region archiPanel
-
-
-            #endregion
-
-            #region mepPanel
-            mepPanel.CreateButton<QuicklyWallCommand>((b) =>
+            panel.CreateButton<QuicklyWallCommand>((b) =>
             {
                 b.Text = "QuicklyWall";
                 b.LargeImage = Resources.Materials.ConvertToBitmapSource();
                 b.ToolTip = "非模态窗口、外部事件";
             });
-            mepPanel.CreateButton<SmartRoomCommand>((b) =>
+        }
+
+        private void InitialMepPanel()
+        {
+            var panel = _uiProvider.GetUIApplication().CreateRibbonPanel(_tabName, _mepPanelName);
+
+            panel.CreateButton<SmartRoomCommand>((b) =>
             {
                 b.Text = "SmartRoom";
                 b.LargeImage = Resources.Materials.ConvertToBitmapSource();
                 b.ToolTip = "非模态窗口、外部事件、DMU";
             });
-            mepPanel.CreateButton<FormatPainterCommand>((b) =>
+            panel.CreateButton<FormatPainterCommand>((b) =>
             {
                 b.Text = "格式刷";
                 b.LargeImage = Resources.Mep.ConvertToBitmapSource();
                 b.ToolTip = "非模态窗口、外部事件、DMU";
             });
-            mepPanel.CreateButton<SizeConvertCommand>((b) =>
+            panel.CreateButton<SizeConvertCommand>((b) =>
             {
                 b.Text = "尺寸转换";
                 b.LargeImage = Resources.Materials.ConvertToBitmapSource();
                 b.ToolTip = "非模态窗口、外部事件、DMU";
             });
-            #endregion
+        }
 
-            #region globalPanel
-            PulldownButton pulldownButton = globalPanel.CreatePulldownButton(() =>
+        private void InitialGlobalPanel()
+        {
+            var panel = _uiProvider.GetUIApplication().CreateRibbonPanel(_tabName, _globalPanelName);
+            PulldownButton pulldownButton = panel.CreatePulldownButton(data =>
             {
-                var data = new PulldownButtonData("name", "PanelName")
-                {
-                    Image = Resources.PushButton32.ConvertToBitmapSource(),
-                    LargeImage = Resources.PushButton16.ConvertToBitmapSource(),
-                };
-                return data;
+                data.Text = "设置";
+                data.Name = "btn_设置";
+                data.Image = Resources.PushButton32.ConvertToBitmapSource();
+                data.LargeImage = Resources.PushButton16.ConvertToBitmapSource();
+
             });
             pulldownButton.AddPushButton(UIExtension.CreatePushButtonData<ShieldF1Command>(b =>
             {
-                b.Text = "CadToRevit";
+                b.Text = "屏蔽F1";
                 b.LargeImage = Resources.Materials.ConvertToBitmapSource();
                 b.ToolTip = "没有窗口";
             }));
-            pulldownButton.AddPushButton(UIExtension.CreatePushButtonData<DockablePaneCommand>(b =>
+            pulldownButton.AddPushButton(UIExtension.CreatePushButtonData<BackgroundConvertCommand>(b =>
             {
-                b.Text = "DockablePane";
+                b.Text = "翻转背景";
                 b.LargeImage = Resources.Materials.ConvertToBitmapSource();
-                b.ToolTip = "可停靠窗口";
+                b.ToolTip = "没有窗口";
             }));
+
             pulldownButton.AddSeparator();
-            pulldownButton.AddPushButton(UIExtension.CreatePushButtonData<DataCollectCommand>(b =>
-            {
-                b.Text = "房间导出";
-                b.LargeImage = Resources.Manager.ConvertToBitmapSource();
-                b.ToolTip = "导出房间内墙体长度及房间面积";
-            }));
-            var radioButtonGroup = globalPanel.CreateRadioButtonGroup();
-            radioButtonGroup.AddToggleButtonData<DockablePaneCommand>(() =>
-            {
-                var data = new ToggleButtonData("radioButton", "RadioButton")
-                {
-                    Image = Resources.PushButton16.ConvertToBitmapSource(),
-                    LargeImage = Resources.PushButton32.ConvertToBitmapSource()
-                };
-                return data;
-            });
-            radioButtonGroup.AddToggleButtonData<SetParameterFilterColorCommand>(() =>
-            {
-                var data = new ToggleButtonData("setParameterFilterColorCommand", "SetParameterFilterColorCommand")
-                {
-                    Image = Resources.PushButton16.ConvertToBitmapSource(),
-                    LargeImage = Resources.PushButton32.ConvertToBitmapSource()
-                };
-                return data;
-            });
 
-            //ToggleButton toggleButton = globalPanel.CreateToggleButton<DockablePaneCommand>((b) =>
-            //{
-            //    b.Image = Resources.PushButton32.ConvertToBitmapSource();
-            //    //b.LargeImage = Resources.PushButton16.ConvertToBitmapSource();
-            //    b.ToolTipImage = Resources.PushButton16.ConvertToBitmapSource();
-            //    b.ToolTip = "this is a toolTip";
-            //});
-            //globalPanel.CreateButton<ShieldF1Command>((b) =>
-            //{
-            //    b.Text = "CadToRevit";
-            //    b.LargeImage = Resources.Materials.ConvertToBitmapSource();
-            //    b.ToolTip = "没有窗口";
-            //});
-            //globalPanel.CreateButton<DockablePaneCommand>((b) =>
-            //{
-            //    b.Text = "DockablePane";
-            //    b.LargeImage = Resources.Materials.ConvertToBitmapSource();
-            //    b.ToolTip = "可停靠窗口";
-            //});
-            //globalPanel.CreateButton<DataCollectCommand>((b) =>
-            //{
-            //    b.Text = "房间导出";
-            //    b.LargeImage = Resources.Manager.ConvertToBitmapSource();
-            //    b.ToolTip = "导出房间内墙体长度及房间面积";
-            //});
 
-            globalPanel.CreateButton<CreateSchemaCommand>((b) =>
+
+            var radioButtonGroup = panel.CreateRadioButtonGroup();
+            radioButtonGroup.AddToggleButtonData<DockablePaneCommand>(data =>
             {
-                b.Text = "AttachData";
-                b.LargeImage = Resources.Materials.ConvertToBitmapSource();
-                b.ToolTip = "Data hook on a document";
+                data.Text = "ToggleButton1";
+                data.Name = "ToggleButton1";
+                data.Image = Resources.Materials.ConvertToBitmapSource();
+            }); 
+            radioButtonGroup.AddToggleButtonData<DockablePaneCommand>(data =>
+            {
+                data.Text = "ToggleButton2";
+                data.Name = "ToggleButton1";
+                data.Image = Resources.Materials.ConvertToBitmapSource();
+            });
+            panel.AddSeparator();
+            panel.CreateButton<ParameterFilterCommand>((b) =>
+            {
+                b.Text = "过滤器管理";
+                b.LargeImage = Resources.Develop.ConvertToBitmapSource();
+                b.ToolTip = "This is a Test Command";
+                b.SetContextualHelp(new ContextualHelp(ContextualHelpType.ChmFile, "https://www.baidu.com/"));
             });
 
-            globalPanel.CreateButton<SetParameterFilterColorCommand>((b) =>
+            panel.CreateButton<SetParameterFilterColorCommand>((b) =>
             {
                 b.Text = "清除填充";
                 b.LargeImage = Resources.Develop.ConvertToBitmapSource();
@@ -190,7 +153,7 @@ namespace IronMan.Revit
                 b.ToolTipImage = Resources.Develop.ConvertToBitmapSource();
             });
 
-            globalPanel.CreateStackedItems<DockablePaneCommand, DataCollectCommand, CreateSchemaCommand>(a =>
+            panel.CreateStackedItems<DockablePaneCommand, DataCollectCommand, CreateSchemaCommand>(a =>
             {
                 a.Text = "DockablePane";
                 a.LargeImage = Resources.Materials.ConvertToBitmapSource();
@@ -206,9 +169,9 @@ namespace IronMan.Revit
                 c.LargeImage = Resources.Materials.ConvertToBitmapSource();
                 c.ToolTip = "Data hook on a document";
             });
-            globalPanel.AddSeparator();
+            panel.AddSeparator();
 
-            TextBox textBox = globalPanel.CreateTextBox((t) =>
+            TextBox textBox = panel.CreateTextBox((t) =>
             {
                 t.Image = Resources.Develop.ConvertToBitmapSource();
             });
@@ -227,7 +190,7 @@ namespace IronMan.Revit
             //聚焦后选中
             textBox.SelectTextOnFocus = true;
 
-            ComboBox comboBox = globalPanel.CreateComboBox((t) =>
+            ComboBox comboBox = panel.CreateComboBox((t) =>
             {
                 t.Name = "ComboBoxName";
                 t.Image = Resources.Develop.ConvertToBitmapSource();
@@ -256,83 +219,110 @@ namespace IronMan.Revit
                 textBox.ItemText = sender.ToString();
                 TaskDialog.Show("Title", "ComboBox Changed");
             };
-            #endregion
+        }
 
-            #region IronMan.Revit.Commands.PulldownButtons
-            var btn1 = new PushButtonDataProxy(typeof(BackgroundConvertCommand));
-            developPanel.AddItem(btn1.ConvertRevitButton());
-            developPanel.AddItem(new PushButtonDataProxy(typeof(SetParameterFilterColorCommand)).ConvertRevitButton());
+        private void InitialCadPanel()
+        {
+            var panel = _uiProvider.GetUIApplication().CreateRibbonPanel(_tabName, _cadPanelName);
+            panel.CreateButton<ConvertCAD2Revit>(b =>
+            {
+                b.Text = "智能转换";
+                b.LargeImage = Resources.Materials.ConvertToBitmapSource();
+                b.ToolTip = "智能转换墙，梁，柱，板";
+            });
 
-            //var pullDownButtonData = new PulldownButtonData("工具集", "text")
-            //{
-            //    Image = Resources.PushButton16.ConvertToBitmapSource(),
-            //    LargeImage = Resources.PushButton32.ConvertToBitmapSource()
-            //};
-            //var pullDownButton = panel3.AddItem(pullDownButtonData) as PulldownButton;
+            var button = panel.CreatePulldownButton(data =>
+              {
+                  data.Text = "创建墙";
+                  data.LargeImage = Resources.Materials.ConvertToBitmapSource();
+              });
+        }
 
-            //var typePullDownButton = typeof(AppUI).Assembly.GetTypes().Where(x => x.IsClass && x.IsPublic && x.Namespace == "IronMan.Revit.Commands.PushButtons");
-            //foreach (var type in typePullDownButton)
-            //{
-            //    panel0.AddItem(type.get)
-            //};
+        private void InitialDevelopPanel()
+        {
+            var panel = _uiProvider.GetUIApplication().CreateRibbonPanel(_tabName, _devPanelName);
 
-            #endregion
+            panel.CreateStackedItems<CreateSchemaCommand, AttachDataCommand, DeleteSchemaCommand>(
+                btn1 =>
+                {
+                    btn1.Text = "创建schema";
+                    btn1.LargeImage = Resources.Materials.ConvertToBitmapSource();
+                    btn1.ToolTip = "模态窗口、线程影响因素";
+                },
+                btn2 =>
+                {
+                    btn2.Text = "挂接数据";
+                    btn2.LargeImage = Resources.Materials.ConvertToBitmapSource();
+                    btn2.ToolTip = "Data hook on a document";
+                },
+                btn3 =>
+                {
+                    btn3.Text = "删除schema";
+                    btn3.LargeImage = Resources.Materials.ConvertToBitmapSource();
+                    btn3.ToolTip = "模态窗口、线程影响因素";
+                });
 
-            #region developPanel
-            developPanel.CreateButton<ModeCommand>((b) =>
+            panel.CreateButton<IdingCommand>((b) =>
+            {
+                b.Text = "空闲事件";
+                b.LargeImage = Resources.Materials.ConvertToBitmapSource();
+                b.ToolTip = "模态窗口、线程影响因素";
+            });
+            panel.CreateButton<SubTransactionCommand>((b) =>
+            {
+                b.Text = "事务管理";
+                b.LargeImage = Resources.Materials.ConvertToBitmapSource();
+                b.ToolTip = "模态窗口、线程影响因素";
+            });
+            panel.CreateButton<ModeCommand>((b) =>
             {
                 b.Text = "模态窗口";
                 b.LargeImage = Resources.Materials.ConvertToBitmapSource();
                 b.ToolTip = "模态窗口、线程影响因素";
             });
-            developPanel.CreateButton<FilterCommand>((b) =>
+            panel.CreateButton<FilterCommand>((b) =>
             {
                 b.Text = "Filter";
                 b.LargeImage = Resources.Develop.ConvertToBitmapSource();
                 b.ToolTip = "This is a Test Command";
             });
-            developPanel.CreateButton<XRayCommand>((b) =>
+            panel.CreateButton<XRayCommand>((b) =>
             {
                 b.Text = "X-Ray";
                 b.LargeImage = Resources.Develop.ConvertToBitmapSource();
                 b.ToolTip = "This is a Test Command";
             });
-            developPanel.CreateButton<ParameterFilterCommand>((b) =>
-            {
-                b.Text = "过滤器管理";
-                b.LargeImage = Resources.Develop.ConvertToBitmapSource();
-                b.ToolTip = "This is a Test Command";
-                b.SetContextualHelp(new ContextualHelp(ContextualHelpType.ChmFile, "https://www.baidu.com/"));
-            });
-            developPanel.AddSlideOut();
-            developPanel.CreateButton<FunctionTestCommand>((b) =>
+            panel.AddSlideOut();
+            panel.CreateButton<FunctionTestCommand>((b) =>
             {
                 b.Text = "Test";
                 b.LargeImage = Resources.Develop.ConvertToBitmapSource();
                 b.ToolTip = "Test";
             });
-            developPanel.CreateButton<InformationImportCommand>((b) =>
+            panel.CreateButton<InformationImportCommand>((b) =>
             {
                 b.Text = "导入信息";
                 b.LargeImage = Resources.DataImport.ConvertToBitmapSource();
                 b.ToolTip = "Test";
             });
-            developPanel.CreateButton<InformationExportCommand>((b) =>
+            panel.CreateButton<InformationExportCommand>((b) =>
             {
                 b.Text = "导出信息";
                 b.LargeImage = Resources.DataExport.ConvertToBitmapSource();
                 b.ToolTip = "Test";
             });
-            developPanel.CreateButton<FailureTestCommand>((b) =>
+            panel.CreateButton<FailureTestCommand>((b) =>
             {
                 b.Text = "FailureTest";
                 b.LargeImage = Resources.DataExport.ConvertToBitmapSource();
                 b.ToolTip = "Test";
             });
+            //var btn1 = new PushButtonDataProxy(typeof(BackgroundConvertCommand));
+            //panel.AddItem(btn1.ConvertRevitButton());
+            //panel.AddItem(new PushButtonDataProxy(typeof(SetParameterFilterColorCommand)).ConvertRevitButton());
 
-            #endregion
 
-            return Result.Succeeded;
+
         }
     }
 }

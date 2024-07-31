@@ -18,7 +18,7 @@ namespace IronMan.Revit.Commands
     [Transaction(TransactionMode.Manual)]
     [Journaling(JournalingMode.NoCommandData)]
     [Regeneration(RegenerationOption.Manual)]
-    public class SizeConvertCommand : CommandBase
+    public class SizeConvertCommand : Toolkit.Mvvm.CommandBase
     {
         public override Window CreateMainWindow()
         {

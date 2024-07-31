@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace IronMan.Revit.Commands
+namespace IronMan.Revit.Commands.Test
 {
     [Transaction(TransactionMode.Manual)]
     public class XRayCommand : IExternalCommand
@@ -52,17 +52,18 @@ namespace IronMan.Revit.Commands
                         info += $"{e.Name}\t{e.Category.Name}\t{e.Id}\n";
                         elementSet.Insert(e);
                     }
+
                     MessageBox.Show(info);
                     IEnumerable<ElementId> elementIds = referenceWithContexts.ToList().ConvertAll(x => x.GetReference().ElementId);
                     if (referenceWithContexts.Count() == 0) return Result.Cancelled;
                     selection.SetElementIds(elementIds.ToList());
                     MessageBox.Show(referenceWithContexts.Count().ToString());
-                    
+
                 }
             }
             catch (Exception ex)
             {
-               message = ex.Message;
+                message = ex.Message;
             }
             return Result.Succeeded;
         }

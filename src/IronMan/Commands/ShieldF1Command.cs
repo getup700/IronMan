@@ -32,17 +32,18 @@ namespace IronMan.Revit.Commands
 
         public override Result Execute(ref string message, ElementSet elements)
         {
-            ThreadHook threadHook = SingletonIOC.Current.Container.GetInstance<ThreadHook>();
-            if (_hookSwitch)
-            {
-                threadHook.SetHook();
-                _hookSwitch = true;
-            }
-            else
-            {
-                threadHook.UnHook();
-                _hookSwitch= false;
-            }
+            ThreadHook1 threadHook = SingletonIOC.Current.Container.GetInstance<ThreadHook1>();
+            threadHook.SetHook();
+            //if (_hookSwitch)
+            //{
+            //    threadHook.SetHook();
+            //    _hookSwitch = true;
+            //}
+            //else
+            //{
+            //    threadHook.UnHook();
+            //    _hookSwitch= false;
+            //}
             return Result.Succeeded;
         }
     }

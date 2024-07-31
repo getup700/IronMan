@@ -10,7 +10,7 @@ using System.Windows.Interop;
 
 namespace IronMan.Revit.Toolkit.Mvvm.IOC
 {
-    public class SingletonIOC:IServiceLocate
+    public class SingletonIOC : IServiceLocate
     {
         public static SingletonIOC Current = new SingletonIOC();
         private SimpleIoc _container;
@@ -25,7 +25,7 @@ namespace IronMan.Revit.Toolkit.Mvvm.IOC
                 return _container;
             }
         }
-        
+
         public SimpleIoc Locator => Container;
     }
 }

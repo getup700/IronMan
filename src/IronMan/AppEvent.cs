@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using DataStorage = Autodesk.Revit.DB.ExtensibleStorage.DataStorage;
 using Autodesk.Revit.UI;
+using IronMan.Revit.Utils;
 
 namespace IronMan.Revit
 {
@@ -36,9 +37,10 @@ namespace IronMan.Revit
 
         public void Subscribe()
         {
-            _uiProvider.GetApplication().DocumentOpened += AppEvent_DocumentOpened;
-            _uiProvider.GetApplication().DocumentClosed += AppEvent_DocumentClosed;
-            _uiProvider.GetApplication().DocumentCreated += AppEvent_DocumentCreated;
+
+            //_uiProvider.GetApplication().DocumentOpened += AppEvent_DocumentOpened;
+            //_uiProvider.GetApplication().DocumentClosed += AppEvent_DocumentClosed;
+            //_uiProvider.GetApplication().DocumentCreated += AppEvent_DocumentCreated;
 
             //WindowCenteredDMU windowCenteredDMU = new WindowCenteredDMU(_uiProvider.GetAddInId());
             ////ElementFilter filter = new ElementCategoryFilter(BuiltInCategory.OST_Walls);

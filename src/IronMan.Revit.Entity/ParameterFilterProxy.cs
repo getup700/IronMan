@@ -109,6 +109,7 @@ namespace IronMan.Revit.Entity
                 _activeView.RemoveFilter(Id);
             }
         }
+
         public void SetActiveView(View activeView)
         {
             if (activeView != null && _filter.Document != null)

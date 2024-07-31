@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IronMan.Revit.Commands
+namespace IronMan.Revit.Commands.Test
 {
     [Transaction(TransactionMode.Manual)]
     internal class FilterCommand : IExternalCommand
@@ -20,9 +20,9 @@ namespace IronMan.Revit.Commands
             Document document = commandData.Application.ActiveUIDocument.Document;
 
             //ofclass层叠墙会被统计
-            FilteredElementCollector ofClass = (new FilteredElementCollector(document)).OfClass(typeof(FamilyInstance));
+            FilteredElementCollector ofClass = new FilteredElementCollector(document).OfClass(typeof(FamilyInstance));
             //层叠墙不是新的墙体类型，不会被统计
-            FilteredElementCollector ofCategory = (new FilteredElementCollector(document)).OfCategory(BuiltInCategory.OST_Walls);
+            FilteredElementCollector ofCategory = new FilteredElementCollector(document).OfCategory(BuiltInCategory.OST_Walls);
             FilteredElementCollector wallInstances = document.GetElementInstances(BuiltInCategory.OST_Walls);
             var wallssss = document.GetElements<Wall>();
             var wallTypes = document.GetElements<WallType>();
@@ -31,8 +31,8 @@ namespace IronMan.Revit.Commands
             var families = document.GetElements<Family>(x => x.FamilyCategory.Name == "门");
             //Type:FamilySymbol 4
             //door
-            FilteredElementCollector initial = (new FilteredElementCollector(document)).OfClass(typeof(FamilyInstance));
-            FilteredElementCollector inieeee = (new FilteredElementCollector(document)).OfClass(typeof(FamilyInstance));
+            FilteredElementCollector initial = new FilteredElementCollector(document).OfClass(typeof(FamilyInstance));
+            FilteredElementCollector inieeee = new FilteredElementCollector(document).OfClass(typeof(FamilyInstance));
             //Type:FamilyInstance 4
             //door,door,column
             var docExtension = document.GetElements<FamilyInstance>();

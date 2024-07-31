@@ -17,14 +17,14 @@ namespace IronMan.Revit.Commands
     [Transaction(TransactionMode.Manual)]
     [Journaling(JournalingMode.NoCommandData)]
     [Regeneration(RegenerationOption.Manual)]
-    public class DataCollectCommand : CommandBase
+    public class DataCollectCommand : Toolkit.Mvvm.CommandBase
     {
         public override Window CreateMainWindow()
         {
             return null;
         }
 
-        public override Autodesk.Revit.UI.Result Execute(ref string message, ElementSet elements)
+        public override Result Execute(ref string message, ElementSet elements)
         {
             TransactionStatus status = DataContext.GetDocument().NewTransactionGroup("CadToRevit", () =>
             {
